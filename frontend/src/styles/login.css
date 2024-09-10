@@ -1,0 +1,31 @@
+#app {
+    display: fixed;
+    background:aquamarine;
+    height: 800px;
+  }
+#login {
+    display: fixed;
+    margin-top: 500px;
+    background-color:rgb(255, 255, 255);
+    border-radius: 10px;
+    padding:15px;
+    width: 400px;
+    height: 400px;
+    margin: auto;
+    box-shadow: 5px 5px 10px rgb(2, 2, 2);
+    
+}
+button{
+    margin:auto;
+    box-shadow: 5px 5px 5px;
+    font-size:15px; 
+    border-radius: 3px;
+    a:hover {
+        color: #000000; /* Muda a cor do link quando o cursor passa sobre ele */
+        text-shadow: 5px 5px 5px rgba(0, 0, 0, 0.3); /* Adiciona uma sombra ao texto */
+      }
+}
+input{
+border-radius: 7px;
+font-size: small;
+}
