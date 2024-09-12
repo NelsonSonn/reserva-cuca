@@ -9,6 +9,10 @@ const Room = sequelize.define('Room', {
   name: {
     type: DataTypes.STRING,
     allowNull: false
+  },
+  cucaName: {
+    type: DataTypes.ENUM('BARRA', 'PICI', 'MOBUDIM', 'JOSE WALTER', 'JANGURUSSU'),
+    allowNull: false
   }
 });
 

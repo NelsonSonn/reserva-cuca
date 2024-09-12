@@ -18,16 +18,21 @@ const router = express.Router();
  *       required:
  *         - name
  *         - roomType
+ *         - cucaName
  *       properties:
  *         name:
  *           type: string
  *           description: The name of the room  
  *         roomType:
  *           type: string
- *           description: The type of the room (e.g., "Laboratory", "Meeting Room")
+ *           description: The type of the room (e.g., "Laboratory", "STUDIO")
+ *         cucaName:
+ *           type: string
+ *           descrption: The cuca where the room is located (e.g., "PICI", "BARRA")
  *       example:
  *         name: Laboratorio 01
  *         roomType: Laboratory
+ *         cucaName: PICI
  */
 
 /**

@@ -54,32 +54,8 @@ const router = express.Router();
  *               items:
  *                 $ref: '#/components/schemas/User'
  */
-router.get('/users', userController.getUsers);
+router.get('/users', userController.getAllUsers);
 
-/**
- * @swagger
- * /users/{id}:
- *   get:
- *     summary: Get the user by id
- *     tags: [Users]
- *     parameters:
- *       - in: path
- *         name: id
- *         schema:
- *           type: integer
- *         required: true
- *         description: The user id
- *     responses:
- *       200:
- *         description: The user description by id
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/User'
- *       404:
- *         description: The user was not found
- */
-router.get('/users/:id', userController.getUserById);
 
 /**
  * @swagger
