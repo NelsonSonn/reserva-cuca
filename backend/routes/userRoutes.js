@@ -12,6 +12,8 @@ const router = express.Router();
  *         - username
  *         - email
  *         - password
+ *         - birthData
+ *         - telephone 
  *       properties:
  *         id:
  *           type: integer
@@ -25,10 +27,18 @@ const router = express.Router();
  *         password:
  *           type: string
  *           description: The user's password
+ *         birthDate:
+ *          type: dateonly
+ *          description: the user's birthDate
+ *         telephone:
+ *          type: string
+ *          describition: the user's telephone
  *       example:
  *         username: johndoe
  *         email: johndoe@example.com
  *         password: password123
+ *         birthDate: 2000-12-01
+ *         telephone: "123456789"
  */
 
 /**
