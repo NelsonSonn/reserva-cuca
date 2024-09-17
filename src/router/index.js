@@ -2,6 +2,8 @@ import {createRouter,createWebHistory}from"vue-router";
 import TopicHome from "@/components/TopicHome.vue";
 import UserList from "@/components/UserList.vue";
 import UserForm from "@/components/UserForm.vue";
+import HomePage from "@/components/HomePage.vue";
+
 
 const routes=[
     {
@@ -22,8 +24,13 @@ const routes=[
         name:'UserList',
         component:UserList,
         props: true
-
-    }
+    },
+    {
+        path: '/homepage',
+        name: 'HomePage',
+        component:HomePage,
+        props: true
+    },
 ]
 const router=createRouter({
     history:createWebHistory(),
