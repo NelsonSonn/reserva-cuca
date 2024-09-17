@@ -3,11 +3,23 @@ import TopicHome from "@/components/TopicHome.vue";
 import UserList from "@/components/UserList.vue";
 import UserForm from "@/components/UserForm.vue";
 import HomePage from "@/components/HomePage.vue";
+import LoginUser from "@/components/LoginUser.vue";
+import RegisterUser from "@/components/RegisterUser.vue";
 
 
 const routes=[
     {
         path:'/',
+        name:'LoginUser',
+        component:LoginUser,
+        props: true
+    },{
+        path:'/register',
+        name:'RegisterUser',
+        component:RegisterUser,
+        props: true
+    },{
+        path:'/topichome',
         name:'TopicHome',
         component:TopicHome,
         props: true
@@ -17,9 +29,7 @@ const routes=[
         name:'UserForm',
         component:UserForm,
         props: true
-
-    },
-    {
+    },{
         path:'/userlist',
         name:'UserList',
         component:UserList,
