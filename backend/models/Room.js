@@ -3,7 +3,7 @@ const sequelize = require('../config/database');
 
 const Room = sequelize.define('Room', {
   roomType: {
-    type: DataTypes.ENUM('LABORATORY', 'THEATER', 'CINEMA', 'COWORK', 'LIBRARY', 'STUDIO', ),
+    type: DataTypes.ENUM('LABORATORY', 'THEATER', 'CINEMA', 'COWORK', 'LIBRARY', 'STUDIO','CINECLUBEs' ),
     allowNull: false
   },
   name: {
