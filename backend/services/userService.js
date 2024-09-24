@@ -1,3 +1,4 @@
+const { encryptPassword, comparePassword } = require('../utils/passwordUtils');
 const User = require('../models/User');
 
 const findUserById = async (id) => {
@@ -14,8 +15,11 @@ const findAllUsers = async () => {
    return await User.findAll();
 };
 
+
 const createUser = async (userData) => {
    const existingUser = await User.findOne({ where: { email: userData.email } });
+   const hashedPassword = await encryptPassword(userData.password);
+   userData.password = hashedPassword
 
    if (existingUser) {
       throw new Error('Email already registered');

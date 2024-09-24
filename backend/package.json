@@ -9,12 +9,14 @@
   "keywords": [],
   "author": "Viviane Gomes",
   "contributors": [
-    "Nelson Oliveira"
+    "Nelson Oliveira",
+    "Paulo Robério"
   ],
   "license": "ISC",
   "description": "",
   "dependencies": {
     "backend": "file:",
+    "bcrypt": "^5.1.1",
     "body-parser": "^1.20.2",
     "express": "^4.19.2",
     "mysql2": "^3.11.0",
