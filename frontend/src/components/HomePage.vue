@@ -1,5 +1,6 @@
 <template>
   <nav class="navbar">
+    
     <div class="navbar-brand">
       <div class="navbar-burger" @click="toggleMenu">
       </div>

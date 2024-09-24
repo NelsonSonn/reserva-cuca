@@ -10,8 +10,8 @@
       <label for="password">Senha:</label>
       <input id="password" v-model="user.password" type="password" name="password" required>
     </p>
-        <button @click="home">entrar</button>
-        <button @click="register">cadastrar</button>
+    <button @click="home">entrar</button>
+    <button @click="register">cadastrar</button>
       </div>
       </div>
   </template>
