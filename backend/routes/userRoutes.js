@@ -4,12 +4,19 @@ const router = express.Router();
 
 /**
  * @swagger
+ * tags:
+ *   name: Users
+ *   description: User management API
+ */
+
+/**
+ * @swagger
  * components:
  *   schemas:
  *     User:
  *       type: object
  *       required:
- *         - username
+ *         - name
  *         - email
  *         - password
  *         - birthData
@@ -18,9 +25,9 @@ const router = express.Router();
  *         id:
  *           type: integer
  *           description: The auto-generated id of the user
- *         username:
+ *         name:
  *           type: string
- *           description: The user's username
+ *           description: The user's name
  *         email:
  *           type: string
  *           description: The user's email
@@ -33,19 +40,16 @@ const router = express.Router();
  *         telephone:
  *          type: string
  *          describition: the user's telephone
+ *         role:
+ *          type: string
+ *          description: the user's role  
  *       example:
- *         username: johndoe
- *         email: johndoe@example.com
+ *         name: Kathy Johanson 
+ *         email: kathyj@example.com
  *         password: password123
- *         birthDate: 2000-12-01
- *         telephone: "123456789"
- */
-
-/**
- * @swagger
- * tags:
- *   name: Users
- *   description: The users managing API
+ *         birthDate: 2001-12-11
+ *         telephone: (00)90000-0000
+ *         role: TEACHER 
  */
 
 /**
