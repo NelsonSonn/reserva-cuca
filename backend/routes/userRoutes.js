@@ -1,6 +1,7 @@
 const express = require('express');
 const userController = require('../controllers/userController');
 const router = express.Router();
+const { authMiddleware } = require('../middlewares/authMiddleware');
 
 /**
  * @swagger
@@ -19,12 +20,9 @@ const router = express.Router();
  *         - name
  *         - email
  *         - password
- *         - birthData
+ *         - birthDate
  *         - telephone 
  *       properties:
- *         id:
- *           type: integer
- *           description: The auto-generated id of the user
  *         name:
  *           type: string
  *           description: The user's name
@@ -34,23 +32,71 @@ const router = express.Router();
  *         password:
  *           type: string
  *           description: The user's password
- *         birthDate:
- *          type: dateonly
- *          description: the user's birthDate
  *         telephone:
- *          type: string
- *          describition: the user's telephone
+ *           type: string
+ *           description: The user's telephone number
  *         role:
- *          type: string
- *          description: the user's role  
+ *           type: string
+ *           description: The user's role in the system (e.g., GERENCY, SUPERVISOR,TEACHER)
  *       example:
- *         name: Kathy Johanson 
+ *         name: Kathy Johanson
  *         email: kathyj@example.com
  *         password: password123
- *         birthDate: 2001-12-11
- *         telephone: (00)90000-0000
- *         role: TEACHER 
+ *         telephone: "(00)90000-0000"
+ *         role: TEACHER
+ * 
+ *     LoginResponse:
+ *       type: object
+ *       properties:
+ *         token:
+ *           type: string
+ *           description: JWT token generated upon successful login
+ *         expiresIn:
+ *           type: string
+ *           description: The expiration time of the token (e.g., '1h')
+ *       example:
+ *         token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9"
+ *         expiresIn: "1h"
  */
+
+/**
+ * @swagger
+ * /login:
+ *   post:
+ *     summary: Authenticate a user and return a JWT token
+ *     tags: [Users]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               email:
+ *                 type: string
+ *                 description: The user's email
+ *               password:
+ *                 type: string
+ *                 description: The user's password
+ *             required:
+ *               - email
+ *               - password
+ *             example:
+ *               email: kathyj@example.com
+ *               password: password123
+ *     responses:
+ *       200:
+ *         description: Successfully authenticated, returning JWT token
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/LoginResponse'
+ *       400:
+ *         description: Invalid email or password
+ *       500:
+ *         description: Internal server error
+ */
+router.post('/login', userController.userLogin);
 
 /**
  * @swagger
@@ -68,8 +114,7 @@ const router = express.Router();
  *               items:
  *                 $ref: '#/components/schemas/User'
  */
-router.get('/users', userController.getAllUsers);
-
+router.get('/users', authMiddleware, userController.getAllUsers);
 
 /**
  * @swagger
@@ -93,7 +138,7 @@ router.get('/users', userController.getAllUsers);
  *       500:
  *         description: Some server error
  */
-router.post('/users', userController.createUser);
+router.post('/users', authMiddleware, userController.createUser);
 
 /**
  * @swagger
@@ -124,9 +169,9 @@ router.post('/users', userController.createUser);
  *       404:
  *         description: The user was not found
  *       500:
- *         description: Some error happened
+ *         description: Some error happened 
  */
-router.put('/users/:id', userController.updateUser);
+router.put('/users/:id', authMiddleware, userController.updateUser);
 
 /**
  * @swagger
@@ -147,6 +192,6 @@ router.put('/users/:id', userController.updateUser);
  *       404:
  *         description: The user was not found
  */
-router.delete('/users/:id', userController.deleteUser);
+router.delete('/users/:id', authMiddleware, userController.deleteUser);
 
 module.exports = router;

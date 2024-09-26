@@ -8,15 +8,12 @@ const User = sequelize.define('User', {
   },
   email: {
     type: DataTypes.STRING,
-    allowNull: false
+    allowNull: false,
+    unique: true
   },
   password: {
     type: DataTypes.STRING,
     allowNull: false
-  },
-  birthDate:{
-    type:DataTypes.DATEONLY,
-    allowNull:false
   },
   telephone:{
     type:DataTypes.STRING,
@@ -30,7 +27,8 @@ const User = sequelize.define('User', {
     type: DataTypes.DATE,
   } 
 }, {
-  paranoid: true, // habilita a exclusão suave
+  paranoid: true, // habilita o soft delete
+  timestamps: true
 }); 
 
 module.exports = User;

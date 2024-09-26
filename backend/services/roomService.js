@@ -37,8 +37,7 @@ const updateRoom = async (id, roomData) => {
 
 const deleteRoom = async (id) => {
    const room = await findRoomById(id);
-   room.deletedAt = new Date();
-   await room.save();
+   room.destroy();
 };
 
 module.exports = {
