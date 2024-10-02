@@ -5,6 +5,8 @@ import UserForm from "@/components/UserForm.vue";
 import HomePage from "@/components/HomePage.vue";
 import LoginUser from "@/components/LoginUser.vue";
 import RegisterUser from "@/components/RegisterUser.vue";
+import Menu from "@/components/Menu.vue";
+import MenuItem from "@/components/MenuItem.vue";
 
 
 const routes=[
@@ -34,6 +36,17 @@ const routes=[
         name:'UserList',
         component:UserList,
         props: true
+    },{
+        path:'/side',
+        name:'Menu',
+        component:Menu,
+        props: true
+    },{
+        path:'/sideitem',
+        name:'MenuItem',
+        component:MenuItem,
+        props: true
+
     },
     {
         path: '/homepage',
