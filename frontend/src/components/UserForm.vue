@@ -1,44 +1,53 @@
 <template>
-  <div id="app">
-  <div id="login">
-    <img src="../assets/logo-cuca.png" alt="logo" height="200" width="200"><br>
-    <p>
-      <label for="name">Name:</label>
-      <input id="name" v-model="user.name" type="text" name="name" required>
-      </p>
-      <p>
-      <label for="password">Senha:</label>
-      <input id="password" v-model="user.password" type="password" name="password" required>
-    </p>
-    <button @click="home">entrar</button>
-    <button @click="register">cadastrar</button>
-      </div>
-      </div>
-  </template>
-  
+  <div>
+    <input type="file" @change="onFileChange" />
+    <button @click="uploadFile" :disabled="!selectedFile">Enviar</button>
+    <div v-if="fileName">Arquivo selecionado: {{ fileName }}</div>
+  </div>
+</template>
 
-
-  <script>
-  export default {
+<script>
+export default {
   data() {
     return {
-      user: {
-        name: '',
-        password: ''
-      }
+      selectedFile: null,
+      fileName: ''
     };
   },
   methods: {
-    home() {
-      this.$router.push('/');
+    onFileChange(event) {
+      const file = event.target.files[0];
+      if (file) {
+        this.selectedFile = file;
+        this.fileName = file.name;
+      }
     },
-    register() {
-      // Implementar a lógica para o cadastro
-      alert('Cadastro não implementado');
+    async uploadFile() {
+      if (!this.selectedFile) return;
+
+      const formData = new FormData();
+      formData.append('file', this.selectedFile);
+
+      try {
+        const response = await fetch('URL_DO_SEU_ENDPOINT', {
+          method: 'POST',
+          body: formData
+        });
+
+        if (!response.ok) {
+          throw new Error('Erro ao fazer upload do arquivo.');
+        }
+
+        const result = await response.json();
+        console.log('Arquivo enviado com sucesso:', result);
+      } catch (error) {
+        console.error('Erro:', error);
+      }
     }
   }
-}
-  
-  </script>
-  <style lang="css" src="../styles/login.css"></style>
-  
+};
+</script>
+
+<style scoped>
+/* Estilos opcionais aqui */
+</style>

@@ -78,7 +78,16 @@
         },
         {
           label: "Configurações",
-          icon: "settings"
+          icon: "settings",
+          children:{
+
+          }
+        },{
+          label:"Logout",
+          icon: "logout",
+          children:{
+            
+          }
         }
       ]
     }),
