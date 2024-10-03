@@ -18,8 +18,8 @@
         <input type="tel" name="telephone" placeholder="Telephone">
         <input type="date" name="date" placeholder="date">
         <a href="#">Esqueceu a senha?</a>
-        <button @click="loginuser">entrar</button>
-        <button @click="register">cadastrar</button>
+        <button >entrar</button>
+        <button >cadastrar</button>
 
       </form>
     </div>

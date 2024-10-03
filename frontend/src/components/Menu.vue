@@ -14,6 +14,8 @@
         <a class="navbar-item" href="#">Sobre</a>
         <a class="navbar-item" href="#">Serviços</a>
         <a class="navbar-item" href="#">Contato</a>
+        <a class="navbar-item" href="#">Sair</a>
+
       </div>
     </div>
   </nav>
@@ -83,7 +85,7 @@
 
           }
         },{
-          label:"Logout",
+          label:"Sair",
           icon: "logout",
           children:{
             
