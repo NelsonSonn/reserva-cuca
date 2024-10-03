@@ -16,7 +16,15 @@
         <input type="email" name="email" placeholder="Email">
         <input type="password" name="password" placeholder="Password">
         <input type="tel" name="telephone" placeholder="Telephone">
-        <input type="date" name="date" placeholder="date">
+        <label for="ROLE">Cargo:</label>
+        <select id="ROLE" name="role">
+        <option value="GERENCY">gerencia</option>
+        <option value="TEACHER">professor</option>
+        <option value="SUPERVISOR">supervisão</option>
+        <option value="COORDINATOR">cordernação</option>
+    
+</select>
+
         <a href="#">Esqueceu a senha?</a>
         <button >entrar</button>
         <button >cadastrar</button>
