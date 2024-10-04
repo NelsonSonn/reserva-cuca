@@ -1,6 +1,7 @@
 const express = require('express');
 const roomController = require('../controllers/roomController');
 const router = express.Router();
+const { authMiddleware , checkRole} = require('../middlewares/authMiddleware');
 
 /**
  * @swagger
@@ -18,16 +19,32 @@ const router = express.Router();
  *       required:
  *         - name
  *         - roomType
+ *         - cucaName
+ *         - roomCapability
+ *         - responsibleSector
  *       properties:
  *         name:
  *           type: string
  *           description: The name of the room  
  *         roomType:
  *           type: string
- *           description: The type of the room (e.g., "Laboratory", "Meeting Room")
+ *           description: The type of the room (e.g., "LABORATORY", "STUDIO")
+ *         cucaName:
+ *           type: string
+ *           descrption: The cuca where the room is located (e.g., "PICI", "BARRA")
+ *         roomCapability:
+ *           type: int 
+ *           descrption: The amount of people that a room supports (e.g, 30)
+ *         responsibleSector:
+ *           type: string
+ *           descrption: The sector that is responsible for the room (e.g, "TECHNOLOGY", "SPORT", "GERENCY")
+ *   
  *       example:
- *         name: Laboratorio 01
- *         roomType: Laboratory
+ *         name: Laboratório 01
+ *         roomType: LABORATORY
+ *         cucaName: PICI
+ *         roomCapability: 30
+ *         responsibleSector: TECHNOLOGY
  */
 
 /**
@@ -47,7 +64,7 @@ const router = express.Router();
  *                 $ref: '#/components/schemas/Room'
  */
 
-router.get('/rooms', roomController.getAllRooms);
+router.get('/rooms', authMiddleware, checkRole, roomController.getAllRooms);
 
 /**
  * @swagger
@@ -71,7 +88,7 @@ router.get('/rooms', roomController.getAllRooms);
  *       500:
  *         description: Some server error
  */
-router.post('/rooms', roomController.createRoom);
+router.post('/rooms', authMiddleware, checkRole, roomController.createRoom);
 
 /**
  * @swagger
@@ -104,7 +121,7 @@ router.post('/rooms', roomController.createRoom);
  *       500:
  *         description: Some error happened
  */
-router.put('/rooms/:id', roomController.updateRoom);
+router.put('/rooms/:id', authMiddleware, checkRole, roomController.updateRoom);
 
 /**
  * @swagger
@@ -125,6 +142,6 @@ router.put('/rooms/:id', roomController.updateRoom);
  *       404:
  *         description: The room was not found
  */
-router.delete('/rooms/:id', roomController.deleteRoom);
+router.delete('/rooms/:id', authMiddleware, checkRole, roomController.deleteRoom);
 
 module.exports = router;
