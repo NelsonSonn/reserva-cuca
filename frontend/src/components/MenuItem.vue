@@ -113,12 +113,16 @@
   font-size: 14px;
   color: #000000;
   transition: all 0.3s ease;
+  
+  
 }
 
 .menu-item .label > div {
   display: flex;
   align-items: center;
   gap: 10px;
+  
+  
 }
 
 .menu-item .label i {
@@ -138,11 +142,13 @@
 
 .menu-item.small-item {
   width: fit-content;
+  
 }
 
 .menu-item .label:hover {
   background: #deedff;
   cursor: pointer;
+  
 }
 
 .menu-item .items-container {
@@ -150,6 +156,7 @@
   left: calc(100% + 6px);
   transition: height 0.3s ease;
   overflow: hidden;
+  
 }
 
 .menu-item .items-container.small-menu {
@@ -158,11 +165,13 @@
   background: #fff;
   box-shadow: 0 0 10px #ebebeb;
   top: 0;
+  
 }
 
 .menu-item .items-container.small-menu .label {
   width: 100% !important;
   padding-left: 20px !important;
+  
 }
 
   </style>

@@ -13,15 +13,15 @@
       <form class="sign-up" action="#">
         <h2>Entrar na conta:</h2>
         <div>Use seu email para entrar</div>
-        <input type="email" name="email" placeholder="Email">
-        <input type="password" name="password" placeholder="Password">
-        <input type="tel" name="telephone" placeholder="Telephone">
-        <label for="ROLE">Cargo:</label>
-        <select id="ROLE" name="role">
-        <option value="GERENCY">gerencia</option>
-        <option value="TEACHER">professor</option>
-        <option value="SUPERVISOR">supervisão</option>
-        <option value="COORDINATOR">cordernação</option>
+        <input type="email" name="email" placeholder="Email" required>
+        <input type="password" name="password" placeholder="Password" required>
+        <input type="tel" name="telephone" placeholder="Telephone" required>
+        <select id="role" name="role">
+        <option value="none" required="">não selecionado</option>
+        <option value="GERENCY" >gerencia</option>
+        <option value="TEACHER" >professor</option>
+        <option value="SUPERVISOR" >supervisão</option>
+        <option value="COORDINATOR" >cordernação</option>
     
 </select>
 

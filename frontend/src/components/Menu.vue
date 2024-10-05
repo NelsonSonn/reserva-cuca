@@ -19,6 +19,7 @@
       </div>
     </div>
   </nav>
+  
    <div class="menu" :class="{ 'small-menu': smallMenu }">      
       <MenuItem
         v-for="(item, index) in menuTree"
@@ -109,6 +110,8 @@
   border-right: 1px solid #000000;
   transition: all 0.3s ease;
   overflow: auto;
+  background-color: rgb(5, 184, 255);
+    
 }
 
 .menu i {
