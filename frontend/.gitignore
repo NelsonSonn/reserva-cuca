@@ -2,7 +2,7 @@
 node_modules/
 jsconfig.json
 /dist
-
+../backend/
 
 # local env files
 .env.local
