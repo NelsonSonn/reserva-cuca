@@ -1,10 +1,11 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const sequelize = require('./config/database');
 const userRoutes = require('./routes/userRoutes');
 const roomRoutes = require('./routes/roomRoutes');
-const swagger = require('./swagger');
+const reserveRoutes = require('./routes/reserveRoutes');
 const createDefaultUser = require('./config/seeder');
+const swagger = require('./swagger');
+const { sequelize } = require('./models');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -12,12 +13,13 @@ const PORT = process.env.PORT || 3000;
 app.use(bodyParser.json());
 app.use('/api', userRoutes);
 app.use('/api/', roomRoutes);
+app.use('/api/', reserveRoutes)
 
 swagger(app);
 
 require('dotenv').config();
 
-sequelize.sync()
+sequelize.sync({force: false})
   .then(() => {
     createDefaultUser()
     app.listen(PORT, () => {
