@@ -1,6 +1,7 @@
 const { encryptPassword, comparePassword } = require('../utils/passwordUtils');
 const User = require('../models/User');
 const jwt = require('jsonwebtoken');
+const { Op } = require('sequelize');
 
 const findUserById = async (id) => {
    const user = await User.findByPk(id);
@@ -8,12 +9,24 @@ const findUserById = async (id) => {
    if (!user) {
       throw new Error('User not found');
    }
-
+   
    return user;
 };
 
-const findAllUsers = async () => {
-   return await User.findAll();
+const findAllUsers = async (filters) => {
+   const { name, email, role } = filters;
+   let whereClause = {};
+
+   if (name) {
+       whereClause.name = { [Op.like]: `%${name}%` };
+   }
+   if (email) {
+       whereClause.email = { [Op.like]: `%${email}%` };
+   }
+   if (role) {
+       whereClause.role = role;
+   }
+   return await User.findAll({ where: whereClause });
 };
 
 const userLogin = async (userData) => {
@@ -39,11 +52,16 @@ const userLogin = async (userData) => {
 
 const createUser = async (userData) => {
    const existingUser = await User.findOne({ where: { email: userData.email } });
+   const existingTelephone = await User.findOne({ where: { telephone: userData.telephone } });
    const hashedPassword = await encryptPassword(userData.password);
    userData.password = hashedPassword
 
    if (existingUser) {
       throw new Error('Email already registered');
+   }
+
+   if (existingTelephone) {
+      throw new Error('Telephone already registered');
    }
 
    if(!validateEmail(userData.email)){
@@ -60,6 +78,7 @@ const createUser = async (userData) => {
 
 const updateUser = async (id, userData, userLoggedId) => {
    const user = await findUserById(id);
+   const existingTelephone = await User.findOne({ where: { telephone: userData.telephone } });
    const userLogged = await findUserById(userLoggedId);
 
    if(userLogged.role != 'GERENCY' && userLogged.email != user.email){
@@ -71,6 +90,10 @@ const updateUser = async (id, userData, userLoggedId) => {
 
       if(existingUser){
          throw new Error('Email already in use');
+      }
+
+      if (existingTelephone) {
+         throw new Error('Telephone already registered');
       }
    }
 

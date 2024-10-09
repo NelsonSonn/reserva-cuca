@@ -2,10 +2,10 @@ const roomService = require('../services/roomService');
 
 const getAllRooms = async (req, res) => {
   try {
-    const rooms = await roomService.findAllRooms();
+    const rooms = await roomService.findAllRooms(req.query);
     res.status(200).json(rooms);
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(500).json({ message: 'Error fetching rooms', error });
   }
 };
 

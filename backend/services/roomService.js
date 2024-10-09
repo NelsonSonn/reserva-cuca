@@ -1,4 +1,5 @@
 const Room = require('../models/Room');
+const { Op } = require('sequelize');
 
 const findRoomById = async (id) => {
    const room = await Room.findByPk(id);
@@ -10,8 +11,26 @@ const findRoomById = async (id) => {
    return room;
 };
 
-const findAllRooms = async () => {
-   return await Room.findAll();
+const findAllRooms = async (filters) => {
+  const query = {};
+
+  if (filters.cucaName) {
+    query.cucaName = filters.cucaName;
+  }
+  if (filters.responsibleSector) {
+    query.responsibleSector = filters.responsibleSector;
+  }
+  if (filters.roomType) {
+    query.roomType = filters.roomType;
+  }
+  if (filters.roomCapability) {
+    query.roomCapability = { [Op.lte]: parseInt(filters.roomCapability) }; 
+  }
+  if (filters.name) {
+    query.name = { [Op.like]: `%${filters.name}%` }; 
+  }
+
+  return await Room.findAll({ where: query });
 };
 
 const createRoom = async (roomData) => {
@@ -47,4 +66,3 @@ module.exports = {
     updateRoom,
     deleteRoom,
 };
-
