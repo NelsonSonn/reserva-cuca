@@ -17,33 +17,35 @@ const { authMiddleware , checkRole} = require('../middlewares/authMiddleware');
  *     Room:
  *       type: object
  *       required:
- *         - name
  *         - roomType
+ *         - name
  *         - cucaName
  *         - roomCapability
  *         - responsibleSector
  *       properties:
- *         name:
- *           type: string
- *           description: The name of the room  
  *         roomType:
  *           type: string
- *           description: The type of the room (e.g., "LABORATORY", "STUDIO")
+ *           enum: ['LABORATORY', 'THEATER', 'CINEMA', 'COWORK', 'LIBRARY', 'STUDIO', 'CINECLUBE', 'MULTIUSO']
+ *           description: Type of the room
+ *         name:
+ *           type: string
+ *           description: Name of the room
  *         cucaName:
  *           type: string
- *           descrption: The cuca where the room is located (e.g., "PICI", "BARRA")
+ *           enum: ['BARRA', 'PICI', 'MONBUDIM', 'JOSE_WALTER', 'JANGURUSSU']
+ *           description: CUCA location
  *         roomCapability:
- *           type: int 
- *           descrption: The amount of people that a room supports (e.g, 30)
+ *           type: integer
+ *           description: Maximum room capacity
  *         responsibleSector:
  *           type: string
- *           descrption: The sector that is responsible for the room (e.g, "TECHNOLOGY", "SPORT", "GERENCY")
- *   
+ *           enum: ['SPORT', 'CULTURE', 'TECHNOLOGY', 'GERENCY', 'RH']
+ *           description: Responsible sector for the room
  *       example:
- *         name: Laboratório 01
- *         roomType: LABORATORY
- *         cucaName: PICI
- *         roomCapability: 30
+ *         roomType: COWORK
+ *         name: Sala Cowork Barra
+ *         cucaName: BARRA
+ *         roomCapability: 20
  *         responsibleSector: TECHNOLOGY
  */
 
@@ -53,6 +55,35 @@ const { authMiddleware , checkRole} = require('../middlewares/authMiddleware');
  *   get:
  *     summary: Returns the list of all the rooms
  *     tags: [Rooms]
+ *     parameters:
+ *       - in: query
+ *         name: cucaName
+ *         schema:
+ *           type: string
+ *           enum: ['BARRA', 'PICI', 'MONBUDIM', 'JOSE_WALTER', 'JANGURUSSU']
+ *         description: Filter by CUCA location
+ *       - in: query
+ *         name: responsibleSector
+ *         schema:
+ *           type: string
+ *           enum: ['SPORT', 'CULTURE', 'TECHNOLOGY', 'GERENCY', 'RH']
+ *         description: Filter by responsible sector
+ *       - in: query
+ *         name: roomCapability
+ *         schema:
+ *           type: integer
+ *         description: Filter by rooms that can hold up to X people
+ *       - in: query
+ *         name: name
+ *         schema:
+ *           type: string
+ *         description: Filter by room name (partial match)
+ *       - in: query
+ *         name: roomType
+ *         schema:
+ *           type: string
+ *           enum: ['LABORATORY', 'THEATER', 'CINEMA', 'COWORK', 'LIBRARY', 'STUDIO', 'CINECLUBE', 'MULTIUSO']
+ *         description: Filter by room type
  *     responses:
  *       200:
  *         description: The list of the rooms
@@ -62,9 +93,10 @@ const { authMiddleware , checkRole} = require('../middlewares/authMiddleware');
  *               type: array
  *               items:
  *                 $ref: '#/components/schemas/Room'
+ *       500:
+ *         description: Some server error
  */
-
-router.get('/rooms', authMiddleware, checkRole, roomController.getAllRooms);
+router.get('/rooms', authMiddleware, roomController.getAllRooms);
 
 /**
  * @swagger

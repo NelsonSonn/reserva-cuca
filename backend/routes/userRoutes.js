@@ -102,11 +102,27 @@ router.post('/login', userController.userLogin);
  * @swagger
  * /users:
  *   get:
- *     summary: Returns the list of all the users
+ *     summary: Returns the list of all users or filtered by name, email, or role
  *     tags: [Users]
+ *     parameters:
+ *       - in: query
+ *         name: name
+ *         schema:
+ *           type: string
+ *         description: The name of the user to filter by (partial match)
+ *       - in: query
+ *         name: email
+ *         schema:
+ *           type: string
+ *         description: The email of the user to filter by (partial match)
+ *       - in: query
+ *         name: role
+ *         schema:
+ *           type: string
+ *         description: The role of the user to filter by (exact match)
  *     responses:
  *       200:
- *         description: The list of the users
+ *         description: The list of users, filtered if query parameters are provided
  *         content:
  *           application/json:
  *             schema:
