@@ -6,7 +6,7 @@ import HomePage from "@/components/HomePage.vue";
 import LoginUser from "@/components/LoginUser.vue";
 import RegisterUser from "@/components/RegisterUser.vue";
 import Menu from "@/components/Menu.vue";
-import MenuItem from "@/components/MenuItem.vue";
+import UserDetail from "@/components/UserDetail.vue";
 import AgendaRoom from "@/components/AgendaRoom.vue";
 import ReserveRoom from "@/components/ReserveRoom.vue";
 
@@ -44,11 +44,10 @@ const routes=[
         component:Menu,
         props: true
     },{
-        path:'/sideitem',
-        name:'MenuItem',
-        component:MenuItem,
+        path:'/detail',
+        name:'UserDetail',
+        component:UserDetail,
         props: true
-
     },
     {
         path: '/homepage',
@@ -56,7 +55,7 @@ const routes=[
         component:HomePage,
         props: true
     },{
-        path: '/agendaRoom',
+        path: '/agenda',
         name: 'AgendaRoom',
         component:AgendaRoom,
         props: true
