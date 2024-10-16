@@ -1,27 +1,9 @@
 <template>
       <link rel="icon" href="<%= BASE_URL %>favicon.ico">
-      <link href="https://fonts.googleapis.com/css?family=Material+Icons|Material+Icons+Outlined" rel="stylesheet">
-      <nav class="navbar">
-    
-    <div class="navbar-brand">
-      <div class="navbar-burger" @click="toggleMenu">
-      </div>
-    </div>
-
-    <div class="navbar-menu" :class="{ 'is-active': isActive }">
-      <div class="navbar-end">
-        <a class="navbar-item" href="#">Home</a>
-        <a class="navbar-item" href="#">Sobre</a>
-        <a class="navbar-item" href="#">Serviços</a>
-        <a class="navbar-item" href="#">Contato</a>
-        <a class="navbar-item" href="#">Sair</a>
-
-      </div>
-    </div>
-  </nav>
-  
+      <link href="https://fonts.googleapis.com/css?family=Material+Icons|Material+Icons+Outlined" rel="stylesheet">  
    <div class="menu" :class="{ 'small-menu': smallMenu }">      
-      <MenuItem
+      
+    <MenuItem
         v-for="(item, index) in menuTree"
         :key="index"
         :data="item.children"
@@ -32,6 +14,8 @@
       />
       <i @click="smallMenu = !smallMenu" class="material-icons">menu</i>
     </div>
+    <center><VDatePicker is-dark="system" v-model.range="range" mode="dateTime" class="dark-theme"/></center>
+
   </template>
   
   <script>
@@ -88,9 +72,7 @@
         },{
           label:"Sair",
           icon: "logout",
-          children:{
-            
-          }
+        
         }
       ]
     }),
