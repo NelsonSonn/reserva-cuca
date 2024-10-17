@@ -12,25 +12,28 @@ const findRoomById = async (id) => {
 };
 
 const findAllRooms = async (filters) => {
-  const query = {};
+  const query = {
+    where: {},
+    attributes: { exclude: ['id', 'createdAt', 'updatedAt'] },
+  };
 
   if (filters.cucaName) {
-    query.cucaName = filters.cucaName;
+    query.where.cucaName = filters.cucaName;
   }
   if (filters.responsibleSector) {
-    query.responsibleSector = filters.responsibleSector;
+    query.where.responsibleSector = filters.responsibleSector;
   }
   if (filters.roomType) {
-    query.roomType = filters.roomType;
+    query.where.roomType = filters.roomType;
   }
   if (filters.roomCapability) {
-    query.roomCapability = { [Op.lte]: parseInt(filters.roomCapability) }; 
+    query.where.roomCapability = { [Op.lte]: parseInt(filters.roomCapability) }; 
   }
   if (filters.name) {
-    query.name = { [Op.like]: `%${filters.name}%` }; 
+    query.where.name = { [Op.like]: `%${filters.name}%` }; 
   }
 
-  return await Room.findAll({ where: query });
+  return await Room.findAll(query);
 };
 
 const createRoom = async (roomData) => {
