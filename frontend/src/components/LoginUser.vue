@@ -1,5 +1,6 @@
 <template>
   <article>
+    <Menu />  
     <div class="container">
       <div class="overlay-container">
         <img src="../assets/logo-cuca.png" alt="" class="photo-container">
@@ -24,4 +25,7 @@
     </div>
   </article>
 </template>
+<script>
+
+</script>
 <style lang="css" src="../styles/loginuser.css"/>

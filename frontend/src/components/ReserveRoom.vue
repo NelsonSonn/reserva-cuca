@@ -1,5 +1,6 @@
 <template>
   <div class="calendar-container">
+    <Menu />
     <div class="calendar">
       <h1>Calendário</h1>
       <div class="header">
@@ -53,8 +54,13 @@
 </template>
 
 <script>
+  import Menu from './Menu.vue';    
 export default {
+  components: {
+    Menu
+      }, 
   data() {
+    
     return {
       month: new Date().getMonth(),
       year: new Date().getFullYear(),
@@ -172,8 +178,10 @@ export default {
     isEventDay(date) {
       return this.events[`${date}/${this.month + 1}/${this.year}`]?.length > 0;
     },
-  },
+  
+    },
 };
+
 </script>
 
 <style scoped>

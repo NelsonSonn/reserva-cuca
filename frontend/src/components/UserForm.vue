@@ -1,5 +1,6 @@
 <template>
   <div class="container">
+    <Menu/>
     <h1>Gerenciador de Arquivos</h1>
     <div class="file-upload">
       <input type="file" @change="onFileChange" />
@@ -24,8 +25,11 @@
 </template>
 
 <script>
+  import Menu from './Menu.vue';
+
 export default {
   data() {
+    
     return {
       selectedFile: null,
       fileName: '',
@@ -127,7 +131,9 @@ export default {
   },
   mounted() {
     this.fetchFiles(); // Carrega arquivos ao iniciar o componente
-  }
+  },components: {
+    Menu
+      } 
 };
 </script>
 

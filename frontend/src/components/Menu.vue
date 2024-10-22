@@ -14,7 +14,6 @@
       />
       <i @click="smallMenu = !smallMenu" class="material-icons">menu</i>
     </div>
-    <center><VDatePicker is-dark="system" v-model.range="range" mode="dateTime" class="dark-theme"/></center>
 
   </template>
   
