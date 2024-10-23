@@ -15,18 +15,21 @@ const findUserById = async (id) => {
 
 const findAllUsers = async (filters) => {
    const { name, email, role } = filters;
-   let whereClause = {};
+   const query = {
+      where: {},
+      attributes: { exclude: ['id', 'createdAt', 'updatedAt', 'deletedAt'] },
+    };
 
    if (name) {
-       whereClause.name = { [Op.like]: `%${name}%` };
+       query.where.name = { [Op.like]: `%${name}%` };
    }
    if (email) {
-       whereClause.email = { [Op.like]: `%${email}%` };
+       query.where.email = { [Op.like]: `%${email}%` };
    }
    if (role) {
-       whereClause.role = role;
+       query.where.role = role;
    }
-   return await User.findAll({ where: whereClause });
+   return await User.findAll(query);
 };
 
 const userLogin = async (userData) => {
