@@ -49,7 +49,7 @@ export default{
         email:this.email,
         password:this.password
       }
-      axios.post('http://localhost:5000/login',user)
+      axios.post('http://localhost:3000/login',user)
       .then(res=>{
         if(res.status===200){
           localStorage.setItem('token',res.data.token);
