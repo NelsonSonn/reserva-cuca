@@ -1,0 +1,212 @@
+#app {
+  display: flex;
+  flex-direction: column;
+  background: rgb(255, 255, 255);
+  margin-top: 0px;
+}
+
+.prefeitura-logo img {
+  display: flex;
+  height: 100%;
+  max-height: 40px;
+}
+.button-aside{
+  margin:auto;
+  box-shadow: 5px 5px 5px;
+  font-size:15px; 
+  border-radius: 5px;
+}
+  
+.top-side {
+  margin-top: 0px;
+  width: 100%;
+  height: 33px;
+  background-color: #1AB6CE;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  color: rgb(131, 0, 0);
+  box-sizing: border-box;
+}
+.room-reservation{
+  background-color:rgb(240, 240, 240) ;
+  margin-left: 500px;
+  width: 1000px;
+  height: 100px;
+  text-align: left;
+  padding: 20px;
+  border-color: black;
+  border-radius: 10px;
+  border-style: solid;
+  border-width:2px;
+}
+.top-bar {
+  width: 100%;
+  height: 70px;
+  background-color: #009688;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  color: white;
+  box-sizing: border-box;
+}
+
+.top-nav a {
+  margin: 0 10px;
+  color: white;
+  text-decoration: none;
+  display: inline-block; /* Necessário para que o padding e o fundo funcionem corretamente */
+
+}
+a:hover {
+  color: #000000; /* Muda a cor do link quando o cursor passa sobre ele */
+  text-shadow: 5px 5px 5px rgba(0, 0, 0, 0.3); /* Adiciona uma sombra ao texto */
+}
+.user-info {
+  display: static;
+}
+
+.user-info button {
+  background-color: #009688;
+ 
+}
+
+.content {
+  flex: 1;
+  background-color: #ffffff;
+  padding: 20px;
+}
+
+footer{
+  padding: 50px 10px;
+
+  text-align: center;
+  position: static; left: 650px;
+  position: static; top: 900px;
+  color: #ffffff;
+  background-color: #009688  ;
+  background-size: 50%;
+}
+
+
+    .display{
+    flex-direction: column;
+    background: rgb(255, 255, 255);
+    margin-top: 0px;
+  }
+
+  .prefeitura-logo img {
+    display: flex;
+    height: 100%;
+    max-height: 40px;
+  }
+  .register{
+  }
+  .user{
+    
+  }
+
+  .top-side {
+    margin-top: 0px;
+    width: 100%;
+    height: 33px;
+    background-color: #1AB6CE;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    color: rgb(131, 0, 0);
+    box-sizing: border-box;
+  }
+  .room-reservation{
+    background-color:rgb(255, 255, 255) ;
+    margin-left: 500px;
+    width: 900px;
+    height: 150px;
+    border-radius: 20px;
+    
+  }
+  .top-bar {
+    width: 100%;
+    height: 70px;
+    background-color: #009688;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    color: white;
+    box-sizing: border-box;
+  }
+  
+  .top-nav a {
+    margin: 0 10px;
+    color: white;
+    text-decoration: none;
+    display: inline-block; /* Necessário para que o padding e o fundo funcionem corretamente */
+
+  }
+  a:hover {
+    color: #000000; /* Muda a cor do link quando o cursor passa sobre ele */
+    text-shadow: 5px 5px 5px rgba(0, 0, 0, 0.3); /* Adiciona uma sombra ao texto */
+  }
+  .user-info {
+    display: static;
+  }
+  
+  .user-info button {
+    background-color: #009688;
+   
+  }
+  
+  .side-bar {
+    width: 200px;
+    height: 200px;
+    margin-top: -300px;
+    background-color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    padding: 40px;
+    
+  }
+  
+  .side-bar a {
+    margin-bottom: 10px;
+    color: black;
+    text-decoration: none;
+   
+  }
+  
+  .content {
+    flex: 1;
+    background-color: #ffffff;
+    padding: 20px;
+  }
+  
+  footer{
+    padding: 50px 10px;
+    margin-top: 970px;
+    text-align: center;
+    position: static; left: 650px;
+    position: static; top: 900px;
+    color: #ffffff;
+    background-color: #009688  ;
+    background-size: 50%;
+}
+
+
+
+@media screen and (max-width:768px){
+  #top-bar {
+  grid-template-columns:repeat(2,1fr); 
+  gap: 2rem;
+}
+}
+
+@media screen and (max-width:426px){
+#top-bar {
+grid-template-columns:repeat(2,1fr); 
+gap: 2rem;
+}
+}
