@@ -1,0 +1,57 @@
+/* Estilo do navbar */
+.navbar {
+  background-color: rgb(5, 184, 255);
+  padding: 1rem;
+}
+
+.navbar-item {
+  color: white;
+  padding: 0.5rem 1rem;
+  text-decoration: none;
+}
+
+.navbar-burger {
+  cursor: pointer;
+  display: none;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 1.5rem;
+  width: 2rem;
+}
+
+.navbar-burger span {
+  background-color: white;
+  height: 2px;
+  width: 100%;
+}
+
+/* Estilo de alinhamento à direita */
+.navbar-menu {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.navbar-menu.is-active {
+  display: block;
+}
+
+@media (max-width: 768px) {
+  .navbar-burger {
+    display: flex;
+  }
+
+  .navbar-menu {
+    display: none;
+    flex-direction: column;
+    align-items: flex-end; /* Alinhamento à direita no mobile */
+  }
+
+  .navbar-menu.is-active {
+    display: flex;
+  }
+
+  .navbar-item {
+    padding: 1rem;
+    border-bottom: 1px solid #444;
+  }
+}

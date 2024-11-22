@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="<%= BASE_URL %>favicon.ico">
+  <title><%= htmlWebpackPlugin.options.title %></title>
+</head>
+<body>
+  <noscript>
+    <strong>We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
+  </noscript>
+  
+  <div id="app">
+    <VCalendar />
+    <VDatePicker v-model="selectedDate" />
+  </div>
+  
+  <!-- Vue -->
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  <!-- VCalendar -->
+  <script src="https://unpkg.com/v-calendar"></script>
+
+
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+
+  
+  <script>
+    const { createApp } = Vue;
+    const { setupCalendar, Calendar, DatePicker } = VCalendar;
+
+    const app = createApp({
+      data() {
+        return {
+          selectedDate: null,
+        };
+      },
+    });
+
+    // Use the VCalendar components
+    app.use(setupCalendar, {});
+    app.component('VCalendar', Calendar);
+    app.component('VDatePicker', DatePicker);
+    
+    app.mount('#app');
+  </script>
+</body>
+</html>
