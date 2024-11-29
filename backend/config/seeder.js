@@ -1,13 +1,15 @@
 const User = require('../models/User');
+const { encryptPassword } = require('../utils/passwordUtils');
 
 async function createDefaultUser() {
   try {
     const user = await User.findOne({ where: { email: 'gerencia@redecuca.com' } });
     if (!user) {
+      const hashedPassword = await encryptPassword('gerencia@cuca');
       await User.create({
         name: 'Gerencia',
         email: 'gerencia@redecuca.com',
-        password: 'gerencia@cuca',
+        password: hashedPassword,
         role: 'GERENCY',
         telephone: '(85)9 9999-9999'
       });
