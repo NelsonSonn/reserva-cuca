@@ -8,11 +8,10 @@ import { INITIAL_EVENTS, createEventId } from './event-utils'
 import NavBar from './NavBar.vue';
 
 export default defineComponent({
-  
   components: {
-    FullCalendar,NavBar
+    FullCalendar, NavBar
   },
-  
+
   data() {
     return {
       categories: [
@@ -22,18 +21,23 @@ export default defineComponent({
         { name: 'Direito', color: '#9C27B0' },
         { name: 'Esportes', color: '#FFC107' }
       ],
+      rooms: [
+        { name: 'Laboratório de Informática', id: 'lab_info' },
+        { name: 'Biblioteca', id: 'biblioteca' },
+        { name: 'Teatro', id: 'teatro' }
+      ],
       calendarOptions: {
         plugins: [
           dayGridPlugin,
           timeGridPlugin,
-          interactionPlugin // necessário para dateClick
+          interactionPlugin
         ],
         headerToolbar: {
           left: 'prev,next today',
           center: 'title',
           right: 'dayGridMonth,timeGridWeek,timeGridDay'
         },
-        locale:'pt-br',
+        locale: 'pt-br',
         initialView: 'dayGridMonth',
         initialEvents: INITIAL_EVENTS,
         editable: true,
@@ -46,70 +50,126 @@ export default defineComponent({
         eventsSet: this.handleEvents
       },
       currentEvents: [],
+      newEvent: {
+        title: '',
+        category: '',
+        date: '',
+        time: '',
+        endDate: '',
+        endTime: '',
+        room: ''
+      },
+      isModalOpen: false,
+      isEditMode: false, // Controla se estamos em modo de edição ou criação
+      selectedEvent: null, // Guarda o evento selecionado para edição
     }
   },
+
   methods: {
     handleWeekendsToggle() {
       this.calendarOptions.weekends = !this.calendarOptions.weekends
     },
+
     handleDateSelect(selectInfo) {
-      let title = prompt('Digite o título do seu evento')
-      let category = this.chooseCategory()
-
-      if (title && category) {
-        let calendarApi = selectInfo.view.calendar
-        calendarApi.unselect() // limpa a seleção de data
-
-        // Adicionando a categoria e cor ao evento
-        calendarApi.addEvent({
-          id: createEventId(),
-          title,
-          start: selectInfo.startStr,
-          end: selectInfo.endStr,
-          allDay: selectInfo.allDay,
-          extendedProps: {
-            category: category,
-            color: category.color
-          },
-          backgroundColor: category.color, // A cor de fundo do evento
-          borderColor: category.color // A cor da borda do evento
-        })
-      }
+      this.newEvent.date = selectInfo.startStr.split('T')[0];
+      this.newEvent.endDate = selectInfo.startStr.split('T')[0];
+      this.isModalOpen = true;
+      this.isEditMode = false; // Criando um novo evento
     },
+
     chooseCategory() {
-      let categories = this.categories.map((category, index) => `${index + 1}. ${category.name}`).join('\n')
-      let choice = prompt(`Escolha uma categoria para o evento:\n${categories}`)
-      let categoryIndex = parseInt(choice) - 1
+      return this.categories.find(cat => cat.name === this.newEvent.category) || { name: 'Sem categoria', color: '#808080' };
+    },
 
-      if (categoryIndex >= 0 && categoryIndex < this.categories.length) {
-        return this.categories[categoryIndex]
-      }
-      // Caso escolha inválida ou não escolha nada, retornamos uma categoria padrão
-      return { name: 'Sem categoria', color: '#808080' }
+    chooseRoom() {
+      return this.rooms.find(room => room.name === this.newEvent.room) || { name: 'Sem sala', id: 'sem_sala' };
     },
+
     handleEventClick(clickInfo) {
-      if (confirm(`Tem certeza de que deseja deletar o evento '${clickInfo.event.title}'`)) {
-        clickInfo.event.remove()
-      }
+      this.selectedEvent = clickInfo.event;
+      this.newEvent.title = clickInfo.event.title;
+      this.newEvent.category = clickInfo.event.extendedProps.category.name;
+      this.newEvent.date = clickInfo.event.startStr.split('T')[0];
+      this.newEvent.time = clickInfo.event.startStr.split('T')[1].substring(0, 5);
+      this.newEvent.endDate = clickInfo.event.endStr.split('T')[0];
+      this.newEvent.endTime = clickInfo.event.endStr.split('T')[1].substring(0, 5);
+      this.newEvent.room = clickInfo.event.extendedProps.room.name;
+
+      this.isModalOpen = true;
+      this.isEditMode = true; // Estamos no modo de edição
     },
+
     handleEvents(events) {
       this.currentEvents = events
     },
+
+    addEvent() {
+      if (this.newEvent.title && this.newEvent.category && this.newEvent.date && this.newEvent.time && this.newEvent.endDate && this.newEvent.endTime && this.newEvent.room) {
+        const calendarApi = this.$refs.calendar.getApi();
+        calendarApi.unselect();
+
+        if (this.isEditMode && this.selectedEvent) {
+          // Atualizar evento existente
+          this.selectedEvent.setProp('title', this.newEvent.title);
+          this.selectedEvent.setExtendedProp('category', this.chooseCategory());
+          this.selectedEvent.setExtendedProp('room', this.chooseRoom());
+          this.selectedEvent.setStart(this.newEvent.date + "T" + this.newEvent.time);
+          this.selectedEvent.setEnd(this.newEvent.endDate + "T" + this.newEvent.endTime);
+          this.selectedEvent.setBackgroundColor(this.chooseCategory().color);
+          this.selectedEvent.setBorderColor(this.chooseCategory().color);
+        } else {
+          // Criar um novo evento
+          calendarApi.addEvent({
+            id: createEventId(),
+            title: this.newEvent.title,
+            start: this.newEvent.date + "T" + this.newEvent.time,
+            end: this.newEvent.endDate + "T" + this.newEvent.endTime,
+            allDay: false,
+            extendedProps: {
+              category: this.chooseCategory(),
+              room: this.chooseRoom(),
+            },
+            backgroundColor: this.chooseCategory().color,
+            borderColor: this.chooseCategory().color,
+          });
+        }
+
+        this.isModalOpen = false;
+        this.newEvent = { title: '', category: '', date: '', time: '', endDate: '', endTime: '', room: '' }; // Limpa o formulário
+      } else {
+        alert('Por favor, preencha todos os campos.');
+      }
+    },
+
+    deleteEvent() {
+      if (this.selectedEvent) {
+        if (confirm(`Tem certeza de que quer deletar o evento '${this.selectedEvent.title}'?`)) {
+          this.selectedEvent.remove();
+          this.isModalOpen = false;
+          this.newEvent = { title: '', category: '', date: '', time: '', endDate: '', endTime: '', room: '' }; // Limpa os campos após remoção
+        }
+      }
+    },
+
+    closeModal() {
+      this.isModalOpen = false;
+      this.newEvent = { title: '', category: '', date: '', time: '', endDate: '', endTime: '', room: '' }; // Limpa o formulário
+    }
   }
 })
 </script>
-
 <template>
-    <NavBar />
+  <NavBar />
 
   <div class="demo-app">
+    <!-- Barra lateral à esquerda com as instruções -->
     <div class="demo-app-sidebar">
       <div class="demo-app-sidebar-section">
         <h2>Instruções</h2>
         <ul>
           <li>Selecione as datas para criar um novo evento</li>
           <li>Arraste, solte e redimensione eventos</li>
-          <li>Clique em um evento para deletá-lo</li>
+          <li>Clique em um evento para editar ou deletar</li>
         </ul>
       </div>
 
@@ -147,27 +207,147 @@ export default defineComponent({
               <span v-else>
                 Sem categoria
               </span>
+              <br />
+              <span v-if="event.extendedProps.room">
+                <strong>Sala:</strong> {{ event.extendedProps.room.name }}
+              </span>
+              <br />
+              <span v-if="event.extendedProps.startTime && event.extendedProps.endTime">
+                <strong>Início:</strong> {{ event.extendedProps.startTime }} - 
+                <strong>Fim:</strong> {{ event.extendedProps.endTime }}
+              </span>
             </i>
           </li>
         </ul>
       </div>
     </div>
 
+    <!-- Área principal com o calendário -->
     <div class="demo-app-main">
       <FullCalendar
+        ref="calendar"
         class="demo-app-calendar"
         :options="calendarOptions"
       >
         <template v-slot:eventContent="arg">
           <b>{{ arg.timeText }}</b>
-          <i>{{ arg.event.title }}</i>
+          <i>{{ arg.event.title }}</i><br/>
+          <span v-if="arg.event.extendedProps.room">
+            <strong>Sala:</strong> {{ arg.event.extendedProps.room.name }}
+          </span>
+          <span v-if="arg.event.extendedProps.startTime && arg.event.extendedProps.endTime">
+            <strong>Início:</strong> {{ arg.event.extendedProps.startTime }} - 
+            <strong>Fim:</strong> {{ arg.event.extendedProps.endTime }}
+          </span>
         </template>
       </FullCalendar>
     </div>
   </div>
+
+  <!-- Modal de Cadastro de Evento -->
+  <div v-if="isModalOpen" class="modal-overlay">
+    <div class="modal">
+      <h2>{{ isEditMode ? 'Editar Evento' : 'Cadastrar Evento' }}</h2>
+      <div class="todo-input">
+        <span>Nome do Evento: </span>
+        <input v-model="newEvent.title" type="text" placeholder="Evento">
+
+        <span>Área: </span>
+        <input v-model="newEvent.category" type="text" placeholder="Área" list="categoryList">
+        <datalist id="categoryList">
+          <option value="Tecnologia"></option>
+          <option value="Artes"></option>
+          <option value="Cultura"></option>
+          <option value="Direito"></option>
+          <option value="Esportes"></option>
+        </datalist>
+
+        <span>Data Início:</span>
+        <input v-model="newEvent.date" type="date">
+
+        <span>Horário Início:</span>
+        <input v-model="newEvent.time" type="time">
+
+        <span>Data Fim:</span>
+        <input v-model="newEvent.endDate" type="date">
+
+        <span>Horário Fim:</span>
+        <input v-model="newEvent.endTime" type="time">
+
+        <span>Sala:</span>
+        <input v-model="newEvent.room" type="text" placeholder="Sala">
+
+        <div class="modal-actions">
+          <button @click="addEvent">{{ isEditMode ? 'Salvar Alterações' : 'Salvar' }}</button>
+          <button @click="closeModal">Cancelar</button>
+          <button v-if="isEditMode" @click="deleteEvent">Deletar</button>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
-<style lang="css">
+<style scoped>
+/* Estilos para o Modal */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 300px; /* Ajusta a largura para deixar a barra lateral visível */
+  width: calc(100% - 300px);
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  width: 400px;
+}
+
+.modal h2 {
+  margin-bottom: 10px;
+}
+
+.modal .todo-input {
+  margin-bottom: 10px;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+button {
+  padding: 10px 15px;
+  background: #4CAF50;
+  border: none;
+  color: white;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+button:hover {
+  background: #45a049;
+}
+
+button:focus {
+  outline: none;
+}
+
+button:last-child {
+  background: #f44336;
+}
+
+button:last-child:hover {
+  background: #e53935;
+}
+
 /* Estilos globais */
 h2 {
   margin: 0;
@@ -224,112 +404,27 @@ i {
 
 .demo-app-main {
   flex-grow: 1;
-  padding: 3em;
-  background: #fff;
 }
 
-.fc {
-  border-radius: 8px;
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
-  overflow: hidden;
-}
-
-.fc-header-toolbar {
-  background-color: #0000006e;
-  color: #fff;
-  padding: 10px 0;
-  border-radius: 6px;
-}
-
-.fc-header-toolbar .fc-button {
-  background-color: #004d40;
-  color: #fff;
-  font-weight: 500;
-  border-radius: 4px;
-  padding: 8px 12px;
-}
-
-.fc-dayGridMonth-view, .fc-timeGridWeek-view, .fc-timeGridDay-view {
-  background-color: #fafafa;
-}
-
-.fc-day, .fc-week, .fc-day-header {
-  border: 1px solid #f0f0f0;
-}
-
-.fc-day-grid-event {
-  border-radius: 6px;
-  background-color: #00897b;
-  color: white;
-  padding: 5px 10px;
-  font-size: 14px;
-}
-
-.fc-dayGridMonth-view .fc-day-number {
-  font-weight: 500;
-  color: #3c3c3c;
-}
-
-.fc-dayGridMonth-view .fc-day {
-  transition: background-color 0.2s ease;
-}
-
-.fc-dayGridMonth-view .fc-day:hover {
-  background-color: #e0f2f1;
-}
-
-.fc-dayGridMonth-view .fc-day-today {
-  background-color: #b2dfdb;
-}
-
-.fc-event-title {
-  font-size: 12px;
-  color: white;
-}
-
-.fc-timeGridWeek-view .fc-time-grid-event {
-  font-size: 12px;
-  background-color: #00796b;
-}
-
-.fc .fc-toolbar-title {
-  font-size: 18px;
-  font-weight: 700;
-}
-
-.fc-dayGridMonth-view .fc-day-header {
-  font-size: 14px;
-  font-weight: 500;
-  color: #3c3c3c;
-}
-
-.fc-button.fc-prev-button, .fc-button.fc-next-button {
-  background-color: transparent;
-  color: white;
-  border: none;
-  font-size: 16px;
-}
-
-.fc-button.fc-prev-button:hover, .fc-button.fc-next-button:hover {
-  background-color: rgba(0, 0, 0, 0.1);
-}
-
-.fc-header-toolbar .fc-button-group {
-  margin: 0 10px;
-}
-
-/* Estilo das categorias */
 .category-item {
   display: flex;
   align-items: center;
-  margin: 10px 0;
 }
 
 .category-color {
-  width: 12px;
-  height: 12px;
+
+  display: block;
+  width: 10px;
+  height: 10px;
   border-radius: 50%;
   margin-right: 10px;
-  display: inline-block;
+}
+
+.category-item span {
+  font-size: 14px;
+}
+
+.demo-app-calendar {
+  max-width: 100%;
 }
 </style>
