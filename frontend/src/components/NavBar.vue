@@ -2,14 +2,14 @@
   <nav>
     <div class="logo">
       <img src="../assets/logo-cuca.png" alt="" class="photo-container">
-    
+
     </div>
     <ul :style="{ maxHeight: menuOpen ? '300px' : '0px' }" id="menuList">
-      <li><a href="#"><i class="fa-solid fa-gears" style="color: #000000;"></i>Home</a></li>
-      <li><a href="#"><i class="fa-solid fa-folder-open" style="color: #000000;"></i>About</a></li>
-      <li><a href="#"><i class="fa-solid fa-square-poll-vertical" style="color: #000000;"></i>Services</a></li>
-      <li><a href="#"><i class="fa-solid fa-bell" style="color: #000000;"></i>Product</a></li>
-      <li><a href="#"><i class="fa-solid fa-user" style="color: #000000;"></i>Contact</a></li>
+      <li><a href="#"><i class="fa-solid fa-gears" style="color: #fff;"></i>Home</a></li>
+      <li><a href="#"><i class="fa-solid fa-folder-open" style="color: #fff;"></i>About</a></li>
+      <li><a href="#"><i class="fa-solid fa-square-poll-vertical" style="color: #fff;"></i>Services</a></li>
+      <li><a href="#"><i class="fa-solid fa-bell" style="color: #fff;"></i>Product</a></li>
+      <li><a href="#"><i class="fa-solid fa-user" style="color: #fff;"></i>Contact</a></li>
     </ul>
     <div class="menu-icon" @click="toggleMenu">
       <i class="fa-solid fa-bars"></i>
@@ -56,13 +56,17 @@ nav {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: #1be6db;
+  background: #fc9551;
   position: relative;
   height: 70px;
+  margin-top: -8px;
+  margin-right: -8px;
+  margin-left: -8px;
+  
 }
 
 .logo {
-  color: #fff;
+  color: #ffffff;
 }
 
 nav ul {
@@ -76,12 +80,12 @@ nav ul {
 
 nav ul li a {
   text-decoration: none;
-  color: #030303;
+  color: #ffffff;
   transition: color 0.3s;
 }
 
 nav ul li a:hover {
-  color: #3498db; /* Alterar cor do link ao passar o mouse */
+  color: #FFEC4F; /* Alterar cor do link ao passar o mouse */
 }
 
 .menu-icon {
@@ -99,7 +103,7 @@ nav ul li a:hover {
     position: absolute;
     top: 70px;
     left: 0;
-    right:80px;
+    right:300px;
     flex-direction: column;
     text-align: center;
     background: #00437a;
@@ -112,6 +116,8 @@ nav ul li a:hover {
   nav ul li {
     padding: 20px;
     padding-top: 0;
+    padding-right:0px;
+
   }
 
   .menu-icon {

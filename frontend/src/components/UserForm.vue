@@ -1,156 +1,327 @@
 <template>
-  <NavBar />
+  <div>
+    <h3>Gordon's To-do List</h3>
+    <div class="todo-grid-parent">
+      <!-- To-Do Input Section -->
+      <div>
+        <div class="todo-input todo-block">
+          <span>Nome do Evento: </span>
+          <input v-model="newTodo.text" type="text" placeholder="Evento">
 
-<div>
+          <span>Areas: </span>
+          <input v-model="newTodo.category" type="text" placeholder="Area" list="categoryList">
+          <datalist id="categoryList">
+            <option value="Tecnologia"></option>
+            <option value="Artes"></option>
+            <option value="Cultura"></option>
+            <option value="Direito"></option>
+            <option value="Esportes"></option>
+          </datalist>
 
-    <h2>Gerenciamento de Arquivos</h2>
+          <span>Data:</span>
+          <input v-model="newTodo.date" type="date">
 
-    <!-- Formulário para upload -->
-    <div>
-      <input type="file" @change="handleFileUpload" />
-      <button @click="uploadFile" :disabled="!selectedFile">Upload</button>
+          <span>Horario:</span>
+          <input v-model="newTodo.time" type="time">
+
+          <button @click="addTodo">Adicionar</button>
+
+          <button @click="sortTodos">Ordenar Datas</button>
+
+          <label><input type="checkbox" v-model="incompleteFirst"> Incomplete First </label>
+        </div>
+
+        <!-- To-Do List Table -->
+        <div class="todo-block todoTable-block">
+          <div class="itemsPerPage">
+            <span>Items per page</span>
+            <select v-model="itemsPerPage">
+              <option>5</option>
+              <option>10</option>
+              <option>20</option>
+            </select>
+          </div>
+
+          <table>
+            <tr>
+              <th>Date</th>
+              <th>Time</th>
+              <th>To-do</th>
+              <th>Category</th>
+              <th>Actions</th>
+            </tr>
+            <tr v-for="(todo, index) in paginatedTodos" :key="index">
+              <td>{{ todo.date }}</td>
+              <td>{{ todo.time }}</td>
+              <td>{{ todo.text }}</td>
+              <td>{{ todo.category }}</td>
+              <td>
+                <button @click="editTodo(index)">Edit</button>
+                <button @click="deleteTodo(index)">Delete</button>
+              </td>
+            </tr>
+          </table>
+
+          <div class="pagination-pages">
+            <!-- Pagination controls here -->
+          </div>
+        </div>
+      </div>
+
+      <!-- Calendar Section -->
+      <div class="todo-calendar todo-block">
+        <div id="calendar"></div>
+      </div>
     </div>
 
-    <!-- Lista de arquivos -->
-    <div v-if="files.length">
-      <h3>Arquivos:</h3>
-      <ul>
-        <li v-for="file in files" :key="file.id">
-          <span>{{ file.name }}</span>
-          <button @click="viewFile(file.id)">Visualizar</button>
-          <button @click="deleteFile(file.id)">Excluir</button>
-          <button @click="editFile(file.id)">Editar</button>
-        </li>
-      </ul>
-    </div>
+    <!-- Edit Todo Modal -->
+    <div v-if="isModalOpen" class="todo-overlay" id="todo-overlay">
+      <div class="todo-modal" id="todo-modal">
+        <div class="todo-input todo-block">
+          <span>To-do: </span>
+          <input v-model="editingTodo.text" type="text" placeholder="Enter new to-do">
+          
+          <span>Category: </span>
+          <input v-model="editingTodo.category" type="text" list="categoryList" placeholder="Enter category">
+          
+          <span>Date:</span>
+          <input v-model="editingTodo.date" type="date">
+          
+          <span>Time:</span>
+          <input v-model="editingTodo.time" type="time">
 
-    <!-- Exibição do arquivo -->
-    <div v-if="viewingFile">
-      <h3>Visualizando Arquivo: {{ currentFile.name }}</h3>
-      <pre>{{ currentFile.content }}</pre>
-      <button @click="closeFileView">Fechar</button>
-    </div>
-
-    <!-- Edição de arquivo -->
-    <div v-if="editingFile">
-      <h3>Editando Arquivo: {{ currentFile.name }}</h3>
-      <textarea v-model="currentFile.content"></textarea>
-      <button @click="saveFileEdit">Salvar</button>
-      <button @click="cancelEdit">Cancelar</button>
+          <button @click="saveTodo">Save Change</button>
+        </div>
+      </div>
+      <div class="todo-modal-close-btn" @click="closeModal">X</div>
     </div>
   </div>
-
 </template>
-
 <script>
-import NavBar from './NavBar.vue';
+import { Calendar } from '@fullcalendar/core'; // Importa o FullCalendar
+import dayGridPlugin from '@fullcalendar/daygrid'; // Importa o plugin para visualização mensal
 
 export default {
-  components: {
-    NavBar,
-  },
   data() {
     return {
-      files: [],  // Lista de arquivos
-      selectedFile: null, // Arquivo selecionado para upload
-      currentFile: null, // Arquivo sendo visualizado ou editado
-      viewingFile: false, // Flag para visualização
-      editingFile: false, // Flag para edição
+      newTodo: {
+        text: '',
+        category: '',
+        date: '',
+        time: ''
+      },
+      todos: [],
+      isModalOpen: false,
+      editingTodo: {},
+      itemsPerPage: 5,
+      incompleteFirst: false
     };
   },
+  computed: {
+    paginatedTodos() {
+      let todos = [...this.todos];
+      if (this.incompleteFirst) {
+        todos = todos.filter(todo => !todo.completed).concat(todos.filter(todo => todo.completed));
+      }
+      return todos.slice(0, this.itemsPerPage);
+    }
+  },
   methods: {
-    // Carregar arquivos (simulação de backend)
-    loadFiles() {
-      this.files = JSON.parse(localStorage.getItem('files')) || [];
-    },
-
-    // Upload de arquivo
-    handleFileUpload(event) {
-      this.selectedFile = event.target.files[0];
-    },
-
-    uploadFile() {
-      if (this.selectedFile) {
-        const newFile = {
-          id: Date.now(),
-          name: this.selectedFile.name,
-          content: 'Conteúdo do arquivo carregado', // Simulação de conteúdo
-        };
-        this.files.push(newFile);
-        localStorage.setItem('files', JSON.stringify(this.files));
-        this.selectedFile = null;
+    addTodo() {
+      if (this.newTodo.text && this.newTodo.date && this.newTodo.time) {
+        this.todos.push({ ...this.newTodo, completed: false });
+        this.newTodo.text = '';
+        this.newTodo.category = '';
+        this.newTodo.date = '';
+        this.newTodo.time = '';
       }
     },
-
-    // Visualizar arquivo
-    viewFile(id) {
-      const file = this.files.find(f => f.id === id);
-      this.currentFile = file;
-      this.viewingFile = true;
+    sortTodos() {
+      this.todos.sort((a, b) => new Date(a.date) - new Date(b.date));
     },
-
-    // Fechar visualização
-    closeFileView() {
-      this.viewingFile = false;
-      this.currentFile = null;
+    editTodo(index) {
+      this.editingTodo = { ...this.todos[index], index };
+      this.isModalOpen = true;
     },
-
-    // Editar arquivo
-    editFile(id) {
-      const file = this.files.find(f => f.id === id);
-      this.currentFile = { ...file };
-      this.editingFile = true;
+    saveTodo() {
+      const index = this.editingTodo.index;
+      this.todos[index] = { ...this.editingTodo };
+      this.isModalOpen = false;
     },
-
-    // Salvar edição de arquivo
-    saveFileEdit() {
-      const index = this.files.findIndex(f => f.id === this.currentFile.id);
-      if (index !== -1) {
-        this.files[index] = this.currentFile;
-        localStorage.setItem('files', JSON.stringify(this.files));
-        this.cancelEdit();
-      }
+    closeModal() {
+      this.isModalOpen = false;
     },
-
-    // Cancelar edição de arquivo
-    cancelEdit() {
-      this.editingFile = false;
-      this.currentFile = null;
-    },
-
-    // Excluir arquivo
-    deleteFile(id) {
-      this.files = this.files.filter(f => f.id !== id);
-      localStorage.setItem('files', JSON.stringify(this.files));
-    },
+    deleteTodo(index) {
+      this.todos.splice(index, 1);
+    }
   },
-  created() {
-    this.loadFiles(); // Carregar arquivos ao inicializar o componente
-  },
+  mounted() {
+    // Inicializa o calendário FullCalendar
+    const calendarEl = document.getElementById('calendar');
+    new Calendar(calendarEl, {
+      plugins: [dayGridPlugin],  // Adiciona o plugin dayGrid
+      initialView: 'dayGridMonth' // Configura a visualização inicial
+    }).render();
+  }
 };
 </script>
 
+
 <style scoped>
-/* Estilos simples */
-h2 {
-  color: #333;
+@import url('https://fonts.googleapis.com/css2?family=Rowdies&family=Titillium+Web&display=swap');
+
+.strike {
+  text-decoration: line-through;
 }
 
-button {
-  margin-left: 10px;
+td{
+  border: 1px solid black;
+  padding: 5px;
 }
 
-textarea {
-  width: 100%;
-  height: 150px;
+.todo-input{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  row-gap: 1rem;
 }
 
-ul {
-  list-style-type: none;
-  padding: 0;
+.todoTable-block{
+  margin-top: 1rem;
 }
 
-li {
-  margin-bottom: 10px;
+.pagination-pages{
+  text-align: right;
 }
-</style>
+
+.pagination-pages > * {
+  margin-right: 0.5rem;
+  cursor: pointer;
+}
+
+.material-icons{
+  cursor: pointer;
+}
+
+::-ms-input-placeholder{
+  color: #5a5a5a;
+}
+
+::-webkit-input-placeholder{
+  color: #5a5a5a;
+}
+
+::placeholder{
+  color: #5a5a5a;
+}
+
+input {
+  color:#292727;
+}
+
+h3 {
+  color:#313131;
+  font-family: 'Rowdies', cursive;
+}
+
+
+body{
+  font-family: 'Titillium Web', sans-serif;
+}
+
+.todo-block{
+  border: 1px solid #070707;
+  padding: 1rem;
+  border-radius: 20px;
+  color: #4d4c4c;
+}
+
+@media screen and (max-width: 767px) {
+  /* for mobile or small screen device */
+  #todoTable, .todo-calendar{
+    margin-top: 1rem;
+  }
+}
+
+@media screen and (min-width: 768px) {
+  /* for tablets or laptops or desktops */
+  .todo-grid-parent{
+    display: grid;
+    grid-template-columns: 2fr 3fr;
+    column-gap: 1rem;
+  }
+
+  #calendar{
+    position: sticky;
+    top: 0;
+  }
+}
+
+.todo-overlay{
+  width: 100vw;
+  height: 100vh;
+  background-color: #ddd;
+  position: fixed;
+  top: 0;
+  left: 0;
+  opacity: 0.9;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transform: translateX(-100vw);
+  transition: transform 250ms;
+  z-index: 2;
+}
+
+.todo-modal{
+  min-width: 50vw;
+  height: 50vh;
+  /*border: 1px solid green;*/
+  background-color: #ffd6cc;
+}
+
+.todo-modal-close-btn{
+  background-color: rgb(56, 55, 55);
+  position: absolute;
+  top: 2rem;
+  right: 2rem;
+  width: 2rem;
+  height: 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  color: white;
+  font-weight: bold;
+}
+
+.slidedIntoView {
+  transform: translateX(0);
+  transition: transform 650ms;
+}
+
+#todoTable tr:nth-child(even) {
+  background-color: #fc3200;
+}
+
+button{
+  background-color: #ffffff;
+  color: #353434;
+  border: 1px outset #474747;
+}
+
+button:active{
+  border: 1px inset #7e7e7e;
+}
+
+button:hover{
+  background-color: #868686;
+}
+
+.chevron{
+  transform: translateY(0.4rem);
+}
+
+.itemsPerPage{
+  text-align: right;
+  margin-bottom: 0.5rem;
+}</style>
