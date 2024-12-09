@@ -30,6 +30,7 @@ const User = sequelize.define('User', {
 }, {
   paranoid: true, // habilita o soft delete
   timestamps: true
+  
 }); 
 
 module.exports = User;
