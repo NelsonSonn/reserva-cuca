@@ -28,7 +28,13 @@ const userLogin = async (req, res) => {
       }
     });
   } catch (error) {
-    return res.status(400).json({ message: error.message });
+    if (error.message === 'Email not registered') {
+      return res.status(404).json({ message: 'User not found' });
+    } else if (error.message === 'Password does not match') {
+      return res.status(401).json({ message: 'Invalid password' });
+    } else {
+      return res.status(500).json({ message: 'Internal server error' });
+    }
   }
 };
 

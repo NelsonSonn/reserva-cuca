@@ -38,26 +38,30 @@ export default {
   },
   methods: {
     login() {
-      this.error = ''; // Limpa a mensagem de erro anterior
+      this.error = ''; 
       let user = {
         email: this.email,
         password: this.password,
       };
-      axios.post('http://localhost:3000/login', user)
+      axios.post('http://localhost:3000/api/login', user)
         .then(res => {
-          if (res.status === 200) {
+          if (res.status === 200 && res.data) {
             localStorage.setItem('token', res.data.token);
-            this.$router.push('/side');
+            this.$router.push('/calendar');
+          } else {
+            this.error = 'Falha ao autenticar. Favor tentar novamente.';
           }
         })
         .catch(err => {
-          this.error = err.response.data.error || 'Erro ao fazer login';
-          console.log(this.error);
+          if (err.response.status === 401) {
+            this.error = 'Email ou senha inválidos.';
+          } else {
+            this.error = 'Falha ao autenticar. Favor tentar novamente.';
+          }
         });
     },
     register() {
-      // Lógica para o cadastro deve ser implementada aqui
-      console.log('Cadastrar usuário');
+      this.$router.push('/register');
     },
   },
 };
