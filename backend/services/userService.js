@@ -14,10 +14,10 @@ const findUserById = async (id) => {
 };
 
 const findAllUsers = async (filters) => {
-   const { name, email, role } = filters;
+   const { name, email, role, id } = filters;
    const query = {
       where: {},
-      attributes: { exclude: ['id', 'createdAt', 'updatedAt', 'deletedAt'] },
+      attributes: { exclude: ['createdAt', 'updatedAt', 'deletedAt'] },
     };
 
    if (name) {
@@ -29,6 +29,10 @@ const findAllUsers = async (filters) => {
    if (role) {
        query.where.role = role;
    }
+   if(id){
+      query.where.id = id;
+   }
+
    return await User.findAll(query);
 };
 
