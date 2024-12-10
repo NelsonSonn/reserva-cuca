@@ -39,18 +39,19 @@ const userLogin = async (userData) => {
      throw new Error('Email not registered');
    }
  
-   const isPasswordValid = comparePassword(userData.password, user.password);
+   const isPasswordValid = await comparePassword(userData.password, user.password);
    if (!isPasswordValid) {
      throw new Error('Password does not match');
    }
- 
+  
    const token = jwt.sign(
      { userId: user.id, role: user.role }, // payload com id e role
       process.env.SECRET_KEY,
      { expiresIn: '7d' } 
    );
- 
+
    return { token, user };
+   
  };
 
 const createUser = async (userData) => {

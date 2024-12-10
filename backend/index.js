@@ -6,9 +6,17 @@ const reserveRoutes = require('./routes/reserveRoutes');
 const createDefaultUser = require('./config/seeder');
 const swagger = require('./swagger');
 const { sequelize } = require('./models');
+const cors = require('cors');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+
+app.use(cors({
+  origin: 'http://localhost:8080',
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
+  credentials: true,
+  allowedHeaders: ['Content-Type', 'Authorization'],
+}));
 
 app.use(bodyParser.json());
 app.use('/api', userRoutes);
