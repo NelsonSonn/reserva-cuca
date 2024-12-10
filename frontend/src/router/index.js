@@ -3,7 +3,7 @@ import CalendarUser from "@/components/CalendarUser.vue";
 import UserForm from "@/components/UserForm.vue";
 import LoginUser from "@/components/LoginUser.vue";
 import RegisterUser from "@/components/RegisterUser.vue";
-
+import RoomRegister from "../components/RoomRegister.vue";
 
 const routes=[
     {
@@ -25,6 +25,11 @@ const routes=[
         path:'/calendar',
         name:'CalendarUser',
         component:CalendarUser,
+        props: true
+    },{
+        path:'/roomregister',
+        name:'RoomRegister',
+        component:RoomRegister,
         props: true
     }
 ]
