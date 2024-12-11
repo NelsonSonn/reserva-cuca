@@ -75,26 +75,7 @@
     </div>
 
     <!-- Edit Todo Modal -->
-    <div v-if="isModalOpen" class="todo-overlay" id="todo-overlay">
-      <div class="todo-modal" id="todo-modal">
-        <div class="todo-input todo-block">
-          <span>To-do: </span>
-          <input v-model="editingTodo.text" type="text" placeholder="Enter new to-do">
-          
-          <span>Category: </span>
-          <input v-model="editingTodo.category" type="text" list="categoryList" placeholder="Enter category">
-          
-          <span>Date:</span>
-          <input v-model="editingTodo.date" type="date">
-          
-          <span>Time:</span>
-          <input v-model="editingTodo.time" type="time">
-
-          <button @click="saveTodo">Save Change</button>
-        </div>
-      </div>
-      <div class="todo-modal-close-btn" @click="closeModal">X</div>
-    </div>
+   
   </div>
 </template>
 <script>
@@ -216,6 +197,14 @@ td{
 
 input {
   color:#292727;
+  background-color: #fff;
+  border: none;
+  padding: 8px 15px;
+  margin: 6px 0;
+  width: calc(100% - 30px);
+  border-radius: 15px;
+  border-bottom: 1px solid gray;
+  box-shadow: inset 0 1px 2px black, 0 -1px 1px #fff, 0 1px 0 #fff;
 }
 
 h3 {
@@ -324,4 +313,8 @@ button:hover{
 .itemsPerPage{
   text-align: right;
   margin-bottom: 0.5rem;
-}</style>
+  
+}
+
+
+</style>

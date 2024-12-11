@@ -1,23 +1,30 @@
 <template>
   <article>
-    <img src="../assets/logo-cuca.png" alt="" class="photo-container">
 
     <div class="container">
       <div class="overlay-container">
         <div class="overlay">
           <div class="overlay-right">
+            <img src="../assets/logo-cuca.png" alt="" class="photo-container">
+
             <!---<button class="invert">cadastrar</button>-->
           </div>
         </div>
       </div>
       <form class="sign-up" @submit.prevent="login">
+        <div class="logo-wrapper">
+          <!-- A imagem agora está acima do título -->
+          <img src="../assets/logo-cuca.png" alt="" class="logo">
+        </div>
         <h2>Entrar na conta:</h2>
         <input id="name" type="email" name="email" placeholder="Email" v-model="email" required>
         <input id="word" type="password" name="password" placeholder="Password" v-model="password" required>
-        <button type="submit">Entrar</button>
-        <p>primeira vez acessando?</p><a href="#">faça seu cadastro aqui</a> <!-- <button @click.prevent="register">Cadastrar</button> -->
-
         <a href="#">Esqueceu a senha?</a>
+
+        <button type="submit">Entrar</button>
+
+        <p>primeira vez acessando?<a href="#">faça seu cadastro aqui</a> <!-- <button @click.prevent="register">Cadastrar</button> -->
+        </p>
 
         <div v-if="error" class="error">{{ error }}</div>
       </form>
@@ -69,22 +76,34 @@ export default {
 };
 </script>
 <style scoped>
-img{
-  width: 168px;
-  height: 180px; 
+/* Estilos para a imagem logo no topo */
+.logo-wrapper {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px; /* Adiciona um espaço entre a imagem e o formulário */
 }
+
+.logo {
+  width: 120px; /* Tamanho ajustado da imagem */
+  height: auto;
+}
+
 .container {
   position: relative;
   width: 768px;
-  height: 480px;
+  height: 768px; /* Deixei a altura do container adaptável */
+  max-height: 500px; /* Limita a altura para não exagerar */
   border-radius: 10px;
   overflow: hidden;
   box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2), 0 10px 10px rgba(0, 0, 0, 0.1);
   background: linear-gradient(to bottom, rgb(255, 255, 255), rgba(0, 238, 255, 0.733));
-  margin: auto; /* Center horizontally */
-  display: flex; /* Center vertically */
+  margin: auto;
+  display: flex;
   align-items: center;
   justify-content: center;
+  flex-direction: column; /* Garante que os elementos internos fiquem empilhados */
+  margin-top: 10%;
+  
 }
 
 .overlay-container {
@@ -92,27 +111,27 @@ img{
   top: 0;
   left: 50%;
   width: 50%;
-  height: 100%;
+  height: 120%;
   overflow: hidden;
   transition: transform 0.5s ease-in-out;
+  
 }
-.photo-container
 
 .overlay {
   position: absolute;
   left: -100%;
   height: 100%;
   width: 200%;
-  background: linear-gradient(to right, aqua, rgb(255, 255, 255));
   color: #ffffff;
   transform: translateX(0);
   transition: transform 0.5s ease-in-out;
+  
 }
 
 .overlay-right {
   position: absolute;
-  top: 50%;
-  left: 50%;
+  top: 10%;
+  left: 15%;
   transform: translate(-50%, -50%);
   display: flex;
   flex-direction: column;
@@ -137,6 +156,10 @@ a {
   text-decoration: none;
   margin: 15px;
   font-size: 1rem;
+}
+a:hover {
+  color:rgba(0, 0, 255, 1);  /* Cor do texto quando passar o mouse */
+  /*text-decoration: underline;  /* Sublinha o texto no hover */
 }
 
 button {
@@ -164,23 +187,26 @@ button.invert {
   background-color: transparent;
   border-color: #fff;
 }
+button:hover {
+  color:rgba(169, 169, 169, 1);
+}
 
 form {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 90px 60px;
-  width: calc(50% - 120px);
-  height: calc(60% - 120px);
+  padding: 30px 60px;
+  width: calc(50% - 80px);
+  height: auto;
+  max-height: 350px; /* Limita a altura do formulário */
   text-align: center;
   background: linear-gradient(to right, rgb(255, 255, 255), rgb(255, 255, 255));
   transition: all 0.5s ease-in-out;
   border-radius: 20px;
+  
+  
 }
 
 input {
@@ -197,4 +223,5 @@ input {
 input:focus {
   outline: none;
   background-color: #d2d2d2eb;
-}</style>
+}
+</style>

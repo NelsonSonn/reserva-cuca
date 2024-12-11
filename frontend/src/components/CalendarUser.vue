@@ -427,4 +427,12 @@ i {
 .demo-app-calendar {
   max-width: 100%;
 }
+input{ background-color: #fff;
+  border: none;
+  padding: 8px 15px;
+  margin: 6px 0;
+  width: calc(100% - 30px);
+  border-radius: 15px;
+  border-bottom: 1px solid gray;
+  box-shadow: inset 0 1px 2px black, 0 -1px 1px #fff, 0 1px 0 #fff;}
 </style>
