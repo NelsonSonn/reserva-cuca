@@ -16,15 +16,14 @@
           <!-- A imagem agora está acima do título -->
           <img src="../assets/logo-cuca.png" alt="" class="logo">
         </div>
-        <h2>Entrar na conta:</h2>
+        <h2>Login</h2>
         <input id="name" type="email" name="email" placeholder="Email" v-model="email" required>
-        <input id="word" type="password" name="password" placeholder="Password" v-model="password" required>
+        <input id="word" type="password" name="password" placeholder="Senha" v-model="password" required>
         <a href="#">Esqueceu a senha?</a>
 
-        <button type="submit">Entrar</button>
-
-        <p>primeira vez acessando?<a href="#">faça seu cadastro aqui</a> <!-- <button @click.prevent="register">Cadastrar</button> -->
-        </p>
+        <button type="submit">Entrar</button><br>
+        Primeira vez acessando?<a href="#">Faça seu cadastro aqui</a> <!-- <button @click.prevent="register">Cadastrar</button> -->
+       
 
         <div v-if="error" class="error">{{ error }}</div>
       </form>
@@ -158,7 +157,7 @@ a {
   font-size: 1rem;
 }
 a:hover {
-  color:rgba(0, 0, 255, 1);  /* Cor do texto quando passar o mouse */
+  color:rgb(99, 99, 99);  /* Cor do texto quando passar o mouse */
   /*text-decoration: underline;  /* Sublinha o texto no hover */
 }
 

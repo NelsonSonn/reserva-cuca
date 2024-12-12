@@ -1,320 +1,345 @@
 <template>
-  <div>
-    <h3>Gordon's To-do List</h3>
-    <div class="todo-grid-parent">
-      <!-- To-Do Input Section -->
-      <div>
-        <div class="todo-input todo-block">
-          <span>Nome do Evento: </span>
-          <input v-model="newTodo.text" type="text" placeholder="Evento">
-
-          <span>Areas: </span>
-          <input v-model="newTodo.category" type="text" placeholder="Area" list="categoryList">
-          <datalist id="categoryList">
-            <option value="Tecnologia"></option>
-            <option value="Artes"></option>
-            <option value="Cultura"></option>
-            <option value="Direito"></option>
-            <option value="Esportes"></option>
-          </datalist>
-
-          <span>Data:</span>
-          <input v-model="newTodo.date" type="date">
-
-          <span>Horario:</span>
-          <input v-model="newTodo.time" type="time">
-
-          <button @click="addTodo">Adicionar</button>
-
-          <button @click="sortTodos">Ordenar Datas</button>
-
-          <label><input type="checkbox" v-model="incompleteFirst"> Incomplete First </label>
-        </div>
-
-        <!-- To-Do List Table -->
-        <div class="todo-block todoTable-block">
-          <div class="itemsPerPage">
-            <span>Items per page</span>
-            <select v-model="itemsPerPage">
-              <option>5</option>
-              <option>10</option>
-              <option>20</option>
-            </select>
-          </div>
-
-          <table>
-            <tr>
-              <th>Date</th>
-              <th>Time</th>
-              <th>To-do</th>
-              <th>Category</th>
-              <th>Actions</th>
-            </tr>
-            <tr v-for="(todo, index) in paginatedTodos" :key="index">
-              <td>{{ todo.date }}</td>
-              <td>{{ todo.time }}</td>
-              <td>{{ todo.text }}</td>
-              <td>{{ todo.category }}</td>
-              <td>
-                <button @click="editTodo(index)">Edit</button>
-                <button @click="deleteTodo(index)">Delete</button>
-              </td>
-            </tr>
-          </table>
-
-          <div class="pagination-pages">
-            <!-- Pagination controls here -->
-          </div>
-        </div>
+     <!-- Tabela com todas as salas -->
+     <div class="table-containerr">
+      <div class="itemsPerPage">
+      <h3><span>Items por página</span>
+        <select v-model="itensPorPag">
+          <option>5</option>
+          <option>10</option>
+          <option>20</option>
+        </select></h3>
       </div>
 
-      <!-- Calendar Section -->
-      <div class="todo-calendar todo-block">
-        <div id="calendar"></div>
-      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>Nome:</th>
+            <th>Categoria:</th>
+            <th>CUCA:</th>
+            <th>Capacidade:</th>
+            <th>Setor:</th>
+            <th>Ações:</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="room in paginatedRooms" :key="room.id">
+            <td>{{ room.name }}</td>
+            <td>{{ room.roomType }}</td>
+            <td>{{ room.cucaName }}</td>
+            <td>{{ room.roomCapability }}</td>
+            <td>{{ room.responsibleSector }}</td>
+            <td>
+              <button @click="editRoom(room.id)">Editar</button>
+              <button @click="deleteRoom(room.id)">Excluir</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
-
-    <!-- Edit Todo Modal -->
-   
-  </div>
+  <div class="containerr">
+  <div class="form-containerr">
+    <h1 style="  text-align:center;
+">Gerenciamento de Salas</h1>
+    <form @submit.prevent="handleSubmit">
+      <div class="formulario">
+      <div>
+        <h3><label for="name">Nome da sala: <br></label>
+        <input type="text" v-model="room.name" id="name" required>
+      </h3>
+      </div>
+      <div>
+        <h3><label for="roomType">Categoria da Sala:<br></label>
+      
+        <select v-model="room.roomType" required> 
+          <option value="LABORATORY">LABORATÓRIO</option>
+          <option value="THEATER">TEATRO</option>
+          <option value="CINEMA">CINEMA</option>
+          <option value="COWORK">COWORK</option>
+          <option value="LIBRARY">BIBLIOTECA</option>
+          <option value="STUDIO">ESTÚDIO</option>
+          <option value="CINECLUBE">CINECLUBE</option>  
+          <option value="MULTIUSO">MULTIUSO</option>
+        </select>
+      </h3></div>
+      
+      <div>
+      <h3><label for="cucaName">CUCA:<br></label>
+        <select v-model="room.cucaName" required style="  width: calc(20% - 20px);
+" >
+          <option value="PICI">PICI</option>
+          <option value="BARRA">BARRA</option>
+          <option value="JANGURUSSU">JANGURUSSU</option>
+          <option value="MONDUBIM">MONDUBIM</option>
+          <option value="JOSE_WALTER">JOSÉ WALTER</option>
+        </select>
+      </h3></div>
+      
+      <div>
+      <h3><label for="roomCapability">Capacidade da Sala:<br></label>
+        <input type="number" required v-model="room.roomCapability" min="0" max="200" style="  width: calc(7% - 20px);
+" >
+      </h3></div>
+      <div>
+      <h3><label for="responsibleSector">Setor responsável:<br></label>
+        <select v-model="room.responsibleSector" required style="  width: calc(20% - 20px);
+" >
+          <option value="SPORT">Esporte</option>
+          <option value="CULTURE">Cultura</option>
+          <option value="TECHNOLOGY">Tecnologia</option>
+          <option value="GERENCY">Gerência</option>
+          <option value="RH">RH</option>
+        </select>
+      </h3>
+      </div>
+      <button type="submit">{{ isEditing ? 'Alterar' : 'Cadastrar' }}</button>
+      <div v-if="room.error" class="error">{{ room.error }}</div>
+      </div>
+      
+    </form>
+</div>
+</div>
+ 
+  
 </template>
+
 <script>
-import { Calendar } from '@fullcalendar/core'; // Importa o FullCalendar
-import dayGridPlugin from '@fullcalendar/daygrid'; // Importa o plugin para visualização mensal
+import axios from 'axios';
 
 export default {
   data() {
     return {
-      newTodo: {
-        text: '',
-        category: '',
-        date: '',
-        time: ''
+      room: {
+        id: null,
+        name: '',
+        roomType: '',
+        cucaName: '',
+        roomCapability: 0,
+        responsibleSector: '',
+        error: ''
       },
-      todos: [],
-      isModalOpen: false,
-      editingTodo: {},
-      itemsPerPage: 5,
-      incompleteFirst: false
+      rooms: [],
+      itensPorPag: 5,
+      currentPage: 0,
+      isEditing: false
     };
   },
   computed: {
-    paginatedTodos() {
-      let todos = [...this.todos];
-      if (this.incompleteFirst) {
-        todos = todos.filter(todo => !todo.completed).concat(todos.filter(todo => todo.completed));
-      }
-      return todos.slice(0, this.itemsPerPage);
+    paginatedRooms() {
+      const start = this.currentPage * this.itensPorPag;
+      const end = start + this.itensPorPag;
+      return this.rooms.slice(start, end);
     }
   },
   methods: {
-    addTodo() {
-      if (this.newTodo.text && this.newTodo.date && this.newTodo.time) {
-        this.todos.push({ ...this.newTodo, completed: false });
-        this.newTodo.text = '';
-        this.newTodo.category = '';
-        this.newTodo.date = '';
-        this.newTodo.time = '';
+    handleSubmit() {
+      if (this.isEditing) {
+        this.updateRoom();
+      } else {
+        this.roomForm();
       }
     },
-    sortTodos() {
-      this.todos.sort((a, b) => new Date(a.date) - new Date(b.date));
+    roomForm() {
+      this.room.error = ''; 
+      const token = localStorage.getItem('token');
+
+      if(!this.room.name || !this.room.roomType || !this.room.cucaName || !this.room.roomCapability || !this.room.responsibleSector) {
+        this.room.error = 'Preencha todos os campos.';
+        return;
+      }
+      
+      axios.post('http://localhost:3000/api/rooms', this.room, {
+        headers: {
+          'Authorization': 'Bearer ' + token
+        }
+      })
+      .then(res => {
+        if (res.status === 201) {
+          this.room.error = 'Sala cadastrada com sucesso.';
+          // Limpa os campos do formulário
+          this.room.id = null;
+          this.room.name = '';
+          this.room.roomType = '';
+          this.room.cucaName = '';
+          this.room.roomCapability = 0;
+          this.room.responsibleSector = '';
+          this.isEditing = false;
+          // Atualiza a lista de salas
+          this.fetchRooms();
+        }
+      })
+      .catch(err => {
+        if (err.response && err.response.status === 400) {
+          this.room.error = 'Sala já cadastrada.';
+        } else {
+          this.room.error = 'Falha ao cadastrar. Favor tentar novamente.';
+        }
+      });
     },
-    editTodo(index) {
-      this.editingTodo = { ...this.todos[index], index };
-      this.isModalOpen = true;
+    fetchRooms() {
+      axios.get('http://localhost:3000/api/rooms', {
+        headers: {
+          'Authorization': 'Bearer ' + localStorage.getItem('token')
+        }
+      })
+      .then(res => {
+        this.rooms = res.data;
+      })
+      .catch(err => {
+        console.log(err);
+      });
     },
-    saveTodo() {
-      const index = this.editingTodo.index;
-      this.todos[index] = { ...this.editingTodo };
-      this.isModalOpen = false;
+    editRoom(id) {
+      const room = this.rooms.find(room => room.id === id);
+      if(room){
+        this.room = { ...room};
+        this.isEditing = true;
+      }
     },
-    closeModal() {
-      this.isModalOpen = false;
-    },
-    deleteTodo(index) {
-      this.todos.splice(index, 1);
+    updateRoom() {
+      const token = localStorage.getItem('token');
+      axios.put(`http://localhost:3000/api/rooms/${this.room.id}`, this.room, {
+        headers: {
+          'Authorization': 'Bearer ' + token
+        }
+      })
+      .then(() => {
+        this.room.error = 'Sala alterada com sucesso.';
+
+        this.room.id = null;
+        this.room.name = '';
+        this.room.roomType = '';
+        this.room.cucaName = '';
+        this.room.roomCapability = 0;
+        this.room.responsibleSector = '';
+        this.isEditing = false;
+        
+        this.fetchRooms();
+      })
+      .catch(err => {
+        console.log(err);
+      });
+    },	
+    
+    deleteRoom(id) {
+      const token = localStorage.getItem('token');
+      axios.delete(`http://localhost:3000/api/rooms/${id}`, {
+        headers: {
+          'Authorization': 'Bearer ' + token
+        }
+      })
+      .then(() => {
+        this.fetchRooms();
+      })
+      .catch(err => {
+        console.log(err);
+      });
     }
   },
   mounted() {
-    // Inicializa o calendário FullCalendar
-    const calendarEl = document.getElementById('calendar');
-    new Calendar(calendarEl, {
-      plugins: [dayGridPlugin],  // Adiciona o plugin dayGrid
-      initialView: 'dayGridMonth' // Configura a visualização inicial
-    }).render();
+    this.fetchRooms();
   }
 };
 </script>
 
-
 <style scoped>
-@import url('https://fonts.googleapis.com/css2?family=Rowdies&family=Titillium+Web&display=swap');
-
-.strike {
-  text-decoration: line-through;
-}
-
-td{
-  border: 1px solid black;
-  padding: 5px;
-}
-
-.todo-input{
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  row-gap: 1rem;
-}
-
-.todoTable-block{
-  margin-top: 1rem;
-}
-
-.pagination-pages{
-  text-align: right;
-}
-
-.pagination-pages > * {
-  margin-right: 0.5rem;
-  cursor: pointer;
-}
-
-.material-icons{
-  cursor: pointer;
-}
-
-::-ms-input-placeholder{
-  color: #5a5a5a;
-}
-
-::-webkit-input-placeholder{
-  color: #5a5a5a;
-}
-
-::placeholder{
-  color: #5a5a5a;
-}
 
 input {
-  color:#292727;
   background-color: #fff;
   border: none;
   padding: 8px 15px;
   margin: 6px 0;
-  width: calc(100% - 30px);
-  border-radius: 15px;
+  width: calc(30% - 50px);
+  border-radius: 8px;
   border-bottom: 1px solid gray;
   box-shadow: inset 0 1px 2px black, 0 -1px 1px #fff, 0 1px 0 #fff;
 }
 
+input:focus {
+  outline: none;
+  background-color: #d2d2d2eb;
+}
+
+select{background-color: #fff;
+  border: none;
+  padding: 8px 15px;
+  margin: 6px 0;
+  width: calc(25% - 20px);
+  border-radius: 8px;
+  border-bottom: 1px solid gray;
+  box-shadow: inset 0 1px 2px black, 0 -1px 1px #fff, 0 1px 0 #fff;
+}
 h3 {
-  color:#313131;
-  font-family: 'Rowdies', cursive;
+  color:#4d4d4d;
 }
-
-
-body{
-  font-family: 'Titillium Web', sans-serif;
-}
-
-.todo-block{
-  border: 1px solid #070707;
-  padding: 1rem;
-  border-radius: 20px;
-  color: #4d4c4c;
-}
-
-@media screen and (max-width: 767px) {
-  /* for mobile or small screen device */
-  #todoTable, .todo-calendar{
-    margin-top: 1rem;
-  }
-}
-
-@media screen and (min-width: 768px) {
-  /* for tablets or laptops or desktops */
-  .todo-grid-parent{
-    display: grid;
-    grid-template-columns: 2fr 3fr;
-    column-gap: 1rem;
-  }
-
-  #calendar{
-    position: sticky;
-    top: 0;
-  }
-}
-
-.todo-overlay{
-  width: 100vw;
-  height: 100vh;
-  background-color: #ddd;
-  position: fixed;
-  top: 0;
-  left: 0;
-  opacity: 0.9;
+.containerr {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  transform: translateX(-100vw);
-  transition: transform 250ms;
-  z-index: 2;
-}
-
-.todo-modal{
-  min-width: 50vw;
-  height: 50vh;
-  /*border: 1px solid green;*/
-  background-color: #ffd6cc;
-}
-
-.todo-modal-close-btn{
-  background-color: rgb(56, 55, 55);
-  position: absolute;
-  top: 2rem;
-  right: 2rem;
-  width: 2rem;
-  height: 2rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 50%;
-  color: white;
-  font-weight: bold;
-}
-
-.slidedIntoView {
-  transform: translateX(0);
-  transition: transform 650ms;
-}
-
-#todoTable tr:nth-child(even) {
-  background-color: #fc3200;
-}
-
-button{
-  background-color: #ffffff;
-  color: #353434;
-  border: 1px outset #474747;
-}
-
-button:active{
-  border: 1px inset #7e7e7e;
-}
-
-button:hover{
-  background-color: #868686;
-}
-
-.chevron{
-  transform: translateY(0.4rem);
-}
-
-.itemsPerPage{
-  text-align: right;
-  margin-bottom: 0.5rem;
+  justify-content: space-between;
   
 }
 
+.form-containerr {
+  text-align:left;
+  background-color: #00ffea;
+  margin-top: 20px;
+  width: 45%;
+  height: 5%;
+  margin-right: 130px;
+  padding: 1rem;
+  border-radius: 20px;
+  color: #000000;
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2), 0 10px 10px rgba(0, 0, 0, 0.1);
 
+
+}
+
+
+.table-containerr {
+
+  width: 22%;
+  margin-bottom:-160px;
+  margin-left: 1300px;
+  border: 1px solid #00ffea;
+  padding: 1rem;
+  border-radius: 20px;
+  color: #000000;
+  
+}
+
+.formulario{
+  margin-right: 30px;
+  margin-bottom: 250px;
+}
+
+.error {
+  color: red;
+}
+
+button {
+  border-radius: 20px;
+  border: 1px solid;
+  background-color: rgb(0, 0, 0);
+  color: #fff;
+  font-size: 1rem;
+  font-weight: bold;
+  padding: 10px 40px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  transition: transform 0.1s ease-in;
+}
+
+button:active {
+  transform: scale(0.9);
+}
+
+button:focus {
+  outline: none;
+}
+
+button.invert {
+  background-color: transparent;
+  border-color: #fff;
+}
+button:hover {
+  color:rgba(169, 169, 169, 1);
+}
 </style>

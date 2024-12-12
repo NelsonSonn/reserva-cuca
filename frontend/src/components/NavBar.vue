@@ -5,7 +5,7 @@
 
     </div>
     <ul :style="{ maxHeight: menuOpen ? '300px' : '0px' }" id="menuList">
-      <li><a href="#"><i class="fa-solid fa-gears" style="color: #fff;"></i>Home</a></li>
+      <li><a href="userform"><i class="fa-solid fa-gears" style="color: #fff;"></i>Home</a></li>
       <li><a href="#"><i class="fa-solid fa-folder-open" style="color: #fff;"></i>About</a></li>
       <li><a href="#"><i class="fa-solid fa-square-poll-vertical" style="color: #fff;"></i>Services</a></li>
       <li><a href="#"><i class="fa-solid fa-bell" style="color: #fff;"></i>Product</a></li>
@@ -56,7 +56,7 @@ nav {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: #fc9551;
+  background: #00ffd5;
   position: relative;
   height: 70px;
   margin-top: -8px;
@@ -85,7 +85,7 @@ nav ul li a {
 }
 
 nav ul li a:hover {
-  color: #FFEC4F; /* Alterar cor do link ao passar o mouse */
+  color: #747474; /* Alterar cor do link ao passar o mouse */
 }
 
 .menu-icon {
