@@ -12,7 +12,7 @@ const Room = sequelize.define('Room', {
     unique: true
   },
   cucaName: {
-    type: DataTypes.ENUM('BARRA', 'PICI', 'MONBUDIM', 'JOSE_WALTER', 'JANGURUSSU'),
+    type: DataTypes.ENUM('BARRA', 'PICI', 'MONDUBIM', 'JOSE_WALTER', 'JANGURUSSU'),
     allowNull: false
   },
   roomCapability:{

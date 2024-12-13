@@ -120,6 +120,11 @@ router.post('/login', userController.userLogin);
  *         schema:
  *           type: string
  *         description: The role of the user to filter by (exact match)
+ *       - in: query
+ *         name: id
+ *         schema:
+ *           type: integer
+ *         description: The id of the user to filter by (exact match)
  *     responses:
  *       200:
  *         description: The list of users, filtered if query parameters are provided

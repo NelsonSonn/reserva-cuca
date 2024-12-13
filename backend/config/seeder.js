@@ -11,7 +11,7 @@ async function createDefaultUser() {
         email: 'gerencia@redecuca.com',
         password: hashedPassword,
         role: 'GERENCY',
-        telephone: '(85)9 9999-9999'
+        telephone: '(85)99999-9999'
       });
     }
   } catch (error) {

@@ -1,15 +1,14 @@
 <template>
   <nav>
     <div class="logo">
-      <img src="../assets/logo-cuca.png" alt="" class="photo-container">
-    
+      <a href="calendar"><img src="../assets/logo-cuca.png" alt="" class="photo-container"></a>
+
     </div>
     <ul :style="{ maxHeight: menuOpen ? '300px' : '0px' }" id="menuList">
-      <li><a href="#"><i class="fa-solid fa-gears" style="color: #000000;"></i>Home</a></li>
-      <li><a href="#"><i class="fa-solid fa-folder-open" style="color: #000000;"></i>About</a></li>
-      <li><a href="#"><i class="fa-solid fa-square-poll-vertical" style="color: #000000;"></i>Services</a></li>
-      <li><a href="#"><i class="fa-solid fa-bell" style="color: #000000;"></i>Product</a></li>
-      <li><a href="#"><i class="fa-solid fa-user" style="color: #000000;"></i>Contact</a></li>
+      <li><a href="calendar"><i class="fa-solid fa-home" style="color: #fff;"></i> Inicio</a></li>
+      <li><a href="registerroom"><i class="fa-solid  fa-calendar-days" style="color: #fff;"></i> Salas</a></li>
+      <li><a href="register"><i class="fa-solid fa-gear" style="color: #fff;"></i> Configurações</a></li>
+      <li><a href="/"><i class="fa-solid fa-right-from-bracket" style="color: #fff;"></i> Sair</a></li>
     </ul>
     <div class="menu-icon" @click="toggleMenu">
       <i class="fa-solid fa-bars"></i>
@@ -56,13 +55,18 @@ nav {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: #1be6db;
+  background: #00ffd5;
   position: relative;
   height: 70px;
+  margin-top: -8px;
+  margin-right: -8px;
+  margin-left: -8px;
+  border-radius: 10px;
+  
 }
 
 .logo {
-  color: #fff;
+  color: #ffffff;
 }
 
 nav ul {
@@ -72,16 +76,17 @@ nav ul {
   list-style-type: none;
   margin: 0;
   padding: 0;
+
 }
 
 nav ul li a {
   text-decoration: none;
-  color: #030303;
+  color: #ffffff;
   transition: color 0.3s;
 }
 
 nav ul li a:hover {
-  color: #3498db; /* Alterar cor do link ao passar o mouse */
+  color: #747474; /* Alterar cor do link ao passar o mouse */
 }
 
 .menu-icon {
@@ -99,19 +104,23 @@ nav ul li a:hover {
     position: absolute;
     top: 70px;
     left: 0;
-    right:80px;
+    right:300px;
+    text-align:center;
     flex-direction: column;
-    text-align: center;
-    background: #00437a;
+    background: #636363;
     gap: 0;
     overflow: hidden;
     transition: all 0.5s ease-in-out; /* Transição suave */
     max-height: 0; /* Inicialmente oculto */
+    border-radius: 10px;
+
   }
 
   nav ul li {
     padding: 20px;
     padding-top: 0;
+    padding-right:0px;
+
   }
 
   .menu-icon {
