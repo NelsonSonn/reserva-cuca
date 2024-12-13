@@ -1,15 +1,14 @@
 <template>
   <nav>
     <div class="logo">
-      <img src="../assets/logo-cuca.png" alt="" class="photo-container">
+      <a href="calendar"><img src="../assets/logo-cuca.png" alt="" class="photo-container"></a>
 
     </div>
     <ul :style="{ maxHeight: menuOpen ? '300px' : '0px' }" id="menuList">
-      <li><a href="userform"><i class="fa-solid fa-gears" style="color: #fff;"></i>Home</a></li>
-      <li><a href="#"><i class="fa-solid fa-folder-open" style="color: #fff;"></i>About</a></li>
-      <li><a href="#"><i class="fa-solid fa-square-poll-vertical" style="color: #fff;"></i>Services</a></li>
-      <li><a href="#"><i class="fa-solid fa-bell" style="color: #fff;"></i>Product</a></li>
-      <li><a href="#"><i class="fa-solid fa-user" style="color: #fff;"></i>Contact</a></li>
+      <li><a href="calendar"><i class="fa-solid fa-home" style="color: #fff;"></i> Inicio</a></li>
+      <li><a href="userform"><i class="fa-solid  fa-calendar-days" style="color: #fff;"></i> Salas</a></li>
+      <li><a href="register"><i class="fa-solid fa-gear" style="color: #fff;"></i> Configurações</a></li>
+      <li><a href="/"><i class="fa-solid fa-right-from-bracket" style="color: #fff;"></i> Sair</a></li>
     </ul>
     <div class="menu-icon" @click="toggleMenu">
       <i class="fa-solid fa-bars"></i>
@@ -62,6 +61,7 @@ nav {
   margin-top: -8px;
   margin-right: -8px;
   margin-left: -8px;
+  border-radius: 10px;
   
 }
 
@@ -76,6 +76,7 @@ nav ul {
   list-style-type: none;
   margin: 0;
   padding: 0;
+
 }
 
 nav ul li a {
@@ -104,13 +105,15 @@ nav ul li a:hover {
     top: 70px;
     left: 0;
     right:300px;
+    text-align:center;
     flex-direction: column;
-    text-align: center;
-    background: #00437a;
+    background: #636363;
     gap: 0;
     overflow: hidden;
     transition: all 0.5s ease-in-out; /* Transição suave */
     max-height: 0; /* Inicialmente oculto */
+    border-radius: 10px;
+
   }
 
   nav ul li {

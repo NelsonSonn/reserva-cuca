@@ -3,7 +3,6 @@ const bodyParser = require('body-parser');
 const userRoutes = require('./routes/userRoutes');
 const roomRoutes = require('./routes/roomRoutes');
 const reserveRoutes = require('./routes/reserveRoutes');
-const swagger = require('./swagger');
 const cors = require('cors');
 const createDefaultUser = require('./config/seeder');
 const swagger = require('./swagger');

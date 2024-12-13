@@ -14,7 +14,7 @@ const findRoomById = async (id) => {
 const findAllRooms = async (filters) => {
   const query = {
     where: {},
-    attributes: { exclude: ['id', 'createdAt', 'updatedAt'] },
+    attributes: { exclude: ['createdAt', 'updatedAt'] },
   };
 
   if (filters.cucaName) {

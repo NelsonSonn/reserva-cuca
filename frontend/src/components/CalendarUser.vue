@@ -6,13 +6,16 @@ import timeGridPlugin from '@fullcalendar/timegrid'
 import interactionPlugin from '@fullcalendar/interaction'
 import { INITIAL_EVENTS, createEventId } from './event-utils'
 import NavBar from './NavBar.vue';
+import axios from 'axios';
+import ptBrLocale from '@fullcalendar/core/locales/pt-br' // Importa o idioma pt-br
 
 export default defineComponent({
   components: {
-    FullCalendar, NavBar
+    FullCalendar, NavBar,
   },
 
   data() {
+  
     return {
       categories: [
         { name: 'Tecnologia', color: '#4CAF50' },
@@ -22,11 +25,9 @@ export default defineComponent({
         { name: 'Esportes', color: '#FFC107' }
       ],
       rooms: [
-        { name: 'Laboratório de Informática', id: 'lab_info' },
-        { name: 'Biblioteca', id: 'biblioteca' },
-        { name: 'Teatro', id: 'teatro' }
       ],
       calendarOptions: {
+        
         plugins: [
           dayGridPlugin,
           timeGridPlugin,
@@ -37,7 +38,7 @@ export default defineComponent({
           center: 'title',
           right: 'dayGridMonth,timeGridWeek,timeGridDay'
         },
-        locale: 'pt-br',
+        locale: ptBrLocale, // Define explicitamente o idioma pt-br
         initialView: 'dayGridMonth',
         initialEvents: INITIAL_EVENTS,
         editable: true,
@@ -64,12 +65,27 @@ export default defineComponent({
       selectedEvent: null, // Guarda o evento selecionado para edição
     }
   },
-
+  mounted() {
+    this.fetchRooms();
+  }, 
   methods: {
     handleWeekendsToggle() {
       this.calendarOptions.weekends = !this.calendarOptions.weekends
     },
 
+    fetchRooms(){
+      axios.get('http://localhost:3000/api/rooms/', {
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
+        }
+      })
+      .then(res => {
+        this.rooms = res.data;
+      })
+      .catch(err => {
+        console.error('Erro ao buscar salas: \n', err);
+      });
+    },
     handleDateSelect(selectInfo) {
       this.newEvent.date = selectInfo.startStr.split('T')[0];
       this.newEvent.endDate = selectInfo.startStr.split('T')[0];
@@ -115,8 +131,9 @@ export default defineComponent({
           this.selectedEvent.setExtendedProp('room', this.chooseRoom());
           this.selectedEvent.setStart(this.newEvent.date + "T" + this.newEvent.time);
           this.selectedEvent.setEnd(this.newEvent.endDate + "T" + this.newEvent.endTime);
-          this.selectedEvent.setBackgroundColor(this.chooseCategory().color);
-          this.selectedEvent.setBorderColor(this.chooseCategory().color);
+          this.selectedEvent.setProp('backgroundColor', this.chooseCategory().color);
+          this.selectedEvent.setProp('borderColor', this.chooseCategory().color);
+
         } else {
           // Criar um novo evento
           calendarApi.addEvent({
@@ -164,47 +181,39 @@ export default defineComponent({
   <div class="demo-app">
     <!-- Barra lateral à esquerda com as instruções -->
     <div class="demo-app-sidebar">
-      <div class="demo-app-sidebar-section">
-        <h2>Instruções</h2>
-        <ul>
-          <li>Selecione as datas para criar um novo evento</li>
-          <li>Arraste, solte e redimensione eventos</li>
-          <li>Clique em um evento para editar ou deletar</li>
-        </ul>
-      </div>
 
       <div class="demo-app-sidebar-section">
-        <label>
-          <input
+        <label style="font-size:20px;">
+          Ativar/desativar fins de semana
+          <input style="width:15px ;height: 15px;"
             type="checkbox"
             :checked="calendarOptions.weekends"
-            @change="handleWeekendsToggle"
-          />
-          Ativar/desativar fins de semana
+            @change="handleWeekendsToggle"/>
+          
         </label>
       </div>
 
       <div class="demo-app-sidebar-section">
-        <h2>Áreas</h2>
+        <strong style="font-size:20px;">Áreas</strong>
         <ul>
           <li v-for="category in categories" :key="category.name" class="category-item">
             <span :style="{ backgroundColor: category.color }" class="category-color"></span>
-            <span>{{ category.name }}</span>
+            <span style="font-size:20px;">{{ category.name }}</span>
           </li>
         </ul>
       </div>
 
       <div class="demo-app-sidebar-section">
-        <h2>Todos os Eventos ({{ currentEvents.length }})</h2>
+        <h1 style="font-size:20px;">Todos os Eventos ({{ currentEvents.length }})</h1>
         <ul>
           <li v-for="event in currentEvents" :key="event.id">
-            <b>{{ event.startStr }}</b>
-            <i>
+            <b style="font-size:18px;" >{{ event.startStr }}</b>
+           <strong style="font-size:18px;">
               {{ event.title }} - 
-              <span v-if="event.extendedProps.category">
-                <span :style="{ color: event.extendedProps.category.color }">{{ event.extendedProps.category.name }}</span>
+              <span v-if="event.extendedProps.category" >
+                <span :style="{ color: event.extendedProps.category.color }" >{{ event.extendedProps.category.name }}</span>
               </span>
-              <span v-else>
+              <span v-else >
                 Sem categoria
               </span>
               <br />
@@ -216,7 +225,8 @@ export default defineComponent({
                 <strong>Início:</strong> {{ event.extendedProps.startTime }} - 
                 <strong>Fim:</strong> {{ event.extendedProps.endTime }}
               </span>
-            </i>
+              
+            </strong>
           </li>
         </ul>
       </div>
@@ -275,7 +285,10 @@ export default defineComponent({
         <input v-model="newEvent.endTime" type="time">
 
         <span>Sala:</span>
-        <input v-model="newEvent.room" type="text" placeholder="Sala">
+        <input v-model="newEvent.room" type="text" placeholder="Sala" list="roomList">
+        <datalist id="roomList">
+          <option v-for="room in rooms" :key="room.id" :value="'['+room.cucaName+'] ' + room.name"></option>
+        </datalist>
 
         <div class="modal-actions">
           <button @click="addEvent">{{ isEditMode ? 'Salvar Alterações' : 'Salvar' }}</button>
@@ -289,6 +302,7 @@ export default defineComponent({
 
 <style scoped>
 /* Estilos para o Modal */
+
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -330,6 +344,8 @@ button {
   color: white;
   cursor: pointer;
   font-size: 14px;
+  border-radius: 15px;
+
 }
 
 button:hover {
@@ -370,6 +386,8 @@ li {
 b {
   margin-right: 5px;
   color: #3c3c3c;
+  text-transform: uppercase;  /* Deixa os itens de lista em maiúsculas */
+
 }
 
 i {
@@ -381,29 +399,34 @@ i {
   min-height: 100%;
   font-family: 'Roboto', Arial, Helvetica Neue, Helvetica, sans-serif;
   font-size: 14px;
+  text-transform: capitalize;
+
 }
 
 .demo-app-sidebar {
   width: 300px;
-  background: #f7f7f7;
+  background: #ffffff83;
   border-right: 1px solid #e0e0e0;
   padding: 2em;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+
 }
 
 .demo-app-sidebar-section {
   margin-bottom: 2em;
+
 }
 
 .demo-app-sidebar-section h2 {
   font-size: 16px;
   font-weight: 500;
-  color: #3c3c3c;
+  color: #000000;
   margin-bottom: 0.5em;
 }
 
 .demo-app-main {
   flex-grow: 1;
+
 }
 
 .category-item {
@@ -422,10 +445,13 @@ i {
 
 .category-item span {
   font-size: 14px;
+  color: #000000;
+
 }
 
 .demo-app-calendar {
   max-width: 100%;
+  
 }
 input{ background-color: #fff;
   border: none;

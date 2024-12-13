@@ -1,14 +1,17 @@
 <template>
      <!-- Tabela com todas as salas -->
+     <NavBar />
+     <br>    
      <div class="table-containerr">
       <div class="itemsPerPage">
+        <h1 style="text-align:center;">Salas Registradas</h1>
+
       <h3><span>Items por página</span>
         <select v-model="itensPorPag">
           <option>5</option>
           <option>10</option>
           <option>20</option>
         </select></h3>
-      </div>
 
       <table>
         <thead>
@@ -35,11 +38,11 @@
           </tr>
         </tbody>
       </table>
-    </div>
-  <div class="containerr">
+    </div>   
+     </div>
+
   <div class="form-containerr">
-    <h1 style="  text-align:center;
-">Gerenciamento de Salas</h1>
+    <h1 style="text-align:center;">Gerenciamento de Salas</h1>
     <form @submit.prevent="handleSubmit">
       <div class="formulario">
       <div>
@@ -97,15 +100,19 @@
       
     </form>
 </div>
-</div>
  
   
 </template>
 
 <script>
+
 import axios from 'axios';
+import NavBar from './NavBar.vue';
 
 export default {
+  components: {
+     NavBar
+  },
   data() {
     return {
       room: {
@@ -123,6 +130,7 @@ export default {
       isEditing: false
     };
   },
+  
   computed: {
     paginatedRooms() {
       const start = this.currentPage * this.itensPorPag;
@@ -271,43 +279,45 @@ select{background-color: #fff;
 h3 {
   color:#4d4d4d;
 }
-.containerr {
-  display: flex;
-  justify-content: space-between;
-  
-}
+
 
 .form-containerr {
   text-align:left;
+  display: block;
   background-color: #00ffea;
-  margin-top: 20px;
+  margin-top:9px; 
   width: 45%;
-  height: 5%;
-  margin-right: 130px;
+  height: 80%;
+  padding: 1rem;
+  border-radius: 20px;
+  color: #000000;
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2), 0 10px 10px rgba(0, 0, 0, 0.1);
+  margin-right: auto; /* Centraliza a tabela horizontalmente */
+  margin-top: auto; /* Centraliza a tabela horizontalmente */
+  overflow: hidden; /* Evita que o conteúdo saia da área da tabela */
+  position: fixed; /* Define o posicionamento fixo em relação a outros elementos */
+}
+
+
+.table-containerr {
+  position: fixed; /* Define o posicionamento fixo em relação a outros elementos */
+  display: block;
+  background-color: #00ffea;
+  width: 30%;
+  margin-bottom:-143px;
+  margin-left: 1000px;
+  border: 1px solid #00ffea;
   padding: 1rem;
   border-radius: 20px;
   color: #000000;
   box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2), 0 10px 10px rgba(0, 0, 0, 0.1);
 
-
-}
-
-
-.table-containerr {
-
-  width: 22%;
-  margin-bottom:-160px;
-  margin-left: 1300px;
-  border: 1px solid #00ffea;
-  padding: 1rem;
-  border-radius: 20px;
-  color: #000000;
-  
 }
 
 .formulario{
   margin-right: 30px;
   margin-bottom: 250px;
+  
 }
 
 .error {
@@ -342,4 +352,5 @@ button.invert {
 button:hover {
   color:rgba(169, 169, 169, 1);
 }
+
 </style>
