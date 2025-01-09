@@ -305,12 +305,17 @@ export default defineComponent({
 
 <style scoped>
 /* Estilos para o Modal */
-
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: sans-serif;
+}
 .modal-overlay {
   position: fixed;
   top: 0;
-  left: 300px; /* Ajusta a largura para deixar a barra lateral visível */
-  width: calc(100% - 300px);
+  left: 00px; /* Ajusta a largura para deixar a barra lateral visível */
+  width: calc(120% - 300px);
   height: 100%;
   background: rgba(0, 0, 0, 0.5);
   display: flex;

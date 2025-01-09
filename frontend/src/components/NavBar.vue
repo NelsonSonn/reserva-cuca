@@ -5,13 +5,13 @@
 
     </div>
     <ul :style="{ maxHeight: menuOpen ? '300px' : '0px' }" id="menuList">
-      <li><a href="calendar"><i class="fa-solid fa-home" style="color: #fff;"></i> Inicio</a></li>
-      <li><a href="registerroom"><i class="fa-solid  fa-calendar-days" style="color: #fff;"></i> Salas</a></li>
-      <li><a href="register"><i class="fa-solid fa-gear" style="color: #fff;"></i> Configurações</a></li>
-      <li><a href="/"><i class="fa-solid fa-right-from-bracket" style="color: #fff;"></i> Sair</a></li>
+      <h3><li><a href="calendar"><i class="fa-solid fa-home" style="color: #000;"></i> Inicio</a></li></h3>
+      <h3><li><a href="registerroom"><i class="fa-solid  fa-calendar-days" style="color: #000;"></i> Salas</a></li></h3>
+      <h3><li><a href="register"><i class="fa-solid fa-gear" style="color: #000;"></i> Configurações</a></li></h3>
+      <h3><li><a href="/"><i class="fa-solid fa-right-from-bracket" style="color: #000;"></i> Sair</a></li></h3>
     </ul>
     <div class="menu-icon" @click="toggleMenu">
-      <i class="fa-solid fa-bars"></i>
+      <i class="fa-solid fa-bars" style="color: #000;"></i>
     </div>
   </nav>
 </template>
@@ -55,7 +55,8 @@ nav {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: #00ffd5;
+  box-shadow: 0 3px 10px rgba(133, 132, 132, 0.2), 0 10px 10px rgba(0, 0, 0, 0.1);
+  background: linear-gradient(to right, #eaeaea, #3bb4b0);
   position: relative;
   height: 70px;
   margin-top: -8px;
@@ -81,12 +82,12 @@ nav ul {
 
 nav ul li a {
   text-decoration: none;
-  color: #ffffff;
+  color: #313131;
   transition: color 0.3s;
 }
 
 nav ul li a:hover {
-  color: #747474; /* Alterar cor do link ao passar o mouse */
+  color: #ffffff; /* Alterar cor do link ao passar o mouse */
 }
 
 .menu-icon {
@@ -107,7 +108,7 @@ nav ul li a:hover {
     right:300px;
     text-align:center;
     flex-direction: column;
-    background: #636363;
+    background: #008db8;
     gap: 0;
     overflow: hidden;
     transition: all 0.5s ease-in-out; /* Transição suave */

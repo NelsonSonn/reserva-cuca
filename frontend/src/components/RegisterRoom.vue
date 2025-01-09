@@ -3,8 +3,7 @@
   <NavBar />
   <br>
   <div class="table-containerr">
-   <div class="itemsPerPage">
-   <h3><span>Items por página</span>
+   <h3>Itens por página: 
      <select v-model="itensPorPag">
        <option>5</option>
        <option>10</option>
@@ -36,7 +35,6 @@
        </tr>
      </tbody>
    </table>
- </div>   
   </div>
 
 <div class="form-containerr">
@@ -284,39 +282,42 @@ border-bottom: 1px solid gray;
 box-shadow: inset 0 1px 2px black, 0 -1px 1px #fff, 0 1px 0 #fff;
 }
 h3 {
-color:#4d4d4d;
+color:#ffffff;
 }
 
 
 .form-containerr {
 text-align:left;
 display: block;
-background-color: #00ffea;
+background-color: #3c7883;
 margin-top:9px; 
 width: 45%;
 height: 80%;
 padding: 1rem;
 border-radius: 20px;
-color: #000000;
+color: #ffffff;
 box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2), 0 10px 10px rgba(0, 0, 0, 0.1);
 margin-right: auto; /* Centraliza a tabela horizontalmente */
 margin-top: auto; /* Centraliza a tabela horizontalmente */
 overflow: hidden; /* Evita que o conteúdo saia da área da tabela */
 position: fixed; /* Define o posicionamento fixo em relação a outros elementos */
+border: 1px solid #000000;
+
 }
 
 
 .table-containerr {
+text-align:left;
 position: fixed; /* Define o posicionamento fixo em relação a outros elementos */
 display: block;
-background-color: #00ffea;
+background-color: #3c7883;
 width: 40%;
 margin-bottom:-143px;
 margin-left: 1000px;
-border: 1px solid #00ffea;
+border: 1px solid #000000;
 padding: 1rem;
 border-radius: 20px;
-color: #000000;
+color: #ffffff;
 box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2), 0 10px 10px rgba(0, 0, 0, 0.1);
 
 }
@@ -334,7 +335,7 @@ color: red;
 button {
 border-radius: 20px;
 border: 1px solid;
-background-color: rgb(0, 0, 0);
+background-color: #e7a570;
 color: #fff;
 font-size: 1rem;
 font-weight: bold;

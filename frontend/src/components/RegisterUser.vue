@@ -7,10 +7,12 @@
       </div>
       <form class="sign-up" action="#">
         <h1>Alterar os dados</h1>
-        Nome<input type="name" name="name" placeholder="Nome" v-model="name">
-        Email<input type="email" name="email" placeholder="Email" v-model="email">
-        Telephone<input type="tel" name="telephone" placeholder="Telefone" v-model="telephone">
-        <button @click="updateData">Salvar alteações</button>
+        <input type="name" name="name" placeholder="Nome" v-model="name">
+        <input type="email" name="email" placeholder="Email" v-model="email">
+        <input type="tel" name="telephone" placeholder="Telefone" v-model="telephone">
+        <button @click="updateData">Salvar alterações</button>
+        <a href="calendar"><button >Voltar</button></a>
+
         <div v-if="error" class="error">{{ error }}</div>
       </form>
     </div>
@@ -111,21 +113,24 @@ export default{
   border-radius: 10px;
   overflow: hidden;
   box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2), 0 10px 10px rgba(0, 0, 0, 0.1);
-  background: linear-gradient(to bottom, rgb(255, 255, 255), rgba(0, 238, 255, 0.733));
+  background: linear-gradient(to bottom, rgb(255, 255, 255), #23aca7);
   margin: auto; /* Center horizontally */
   display: flex; /* Center vertically */
   align-items: center;
   justify-content: center;
+  margin-top: 50px; /* Adiciona um espaço entre a imagem e o formulário */
+
 }
 
 .overlay-container {
   position: absolute;
-  top: 0;
+  top: 160px;
   left: 50%;
   width: 50%;
   height: 100%;
   overflow: hidden;
   transition: transform 0.5s ease-in-out;
+  
 }
 .photo-container
 
@@ -138,6 +143,7 @@ export default{
   color: #ffffff;
   transform: translateX(0);
   transition: transform 0.5s ease-in-out;
+  
 }
 
 .overlay-right {
@@ -153,6 +159,7 @@ export default{
   width: calc(50% - 80px);
   height: calc(100% - 140px);
   text-align: center;
+  
 }
 
 h2 {
@@ -173,11 +180,11 @@ a {
 button {
   border-radius: 20px;
   border: 1px solid;
-  background-color: rgb(0, 0, 0);
+  background-color: #e7a570;
   color: #fff;
   font-size: 1rem;
   font-weight: bold;
-  padding: 10px 40px;
+  padding: 10px 33px;
   letter-spacing: 1px;
   text-transform: uppercase;
   transition: transform 0.1s ease-in;
@@ -195,7 +202,9 @@ button.invert {
   background-color: transparent;
   border-color: #fff;
 }
-
+button:hover {
+  color:rgba(169, 169, 169, 1);
+}
 form {
   position: absolute;
   top: 50%;
@@ -212,6 +221,7 @@ form {
   background: linear-gradient(to right, rgb(255, 255, 255), rgb(255, 255, 255));
   transition: all 0.5s ease-in-out;
   border-radius: 20px;
+  
 }
 
 input {

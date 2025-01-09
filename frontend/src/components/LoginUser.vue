@@ -101,7 +101,7 @@ export default {
   border-radius: 10px;
   overflow: hidden;
   box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2), 0 10px 10px rgba(0, 0, 0, 0.1);
-  background: linear-gradient(to bottom, rgb(255, 255, 255), rgba(0, 238, 255, 0.733));
+  background: linear-gradient(to bottom, rgb(255, 255, 255), #23aca7);
   margin: auto;
   display: flex;
   align-items: center;
@@ -170,7 +170,7 @@ a:hover {
 button {
   border-radius: 20px;
   border: 1px solid;
-  background-color: rgb(0, 0, 0);
+  background-color: #e7a570;
   color: #fff;
   font-size: 1rem;
   font-weight: bold;
